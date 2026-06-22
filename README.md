@@ -15,9 +15,10 @@ py -3.14 start_ompc.py
 ```
 
 This starts:
-- Backend API on http://127.0.0.1:8010
-- ZSCJ API on http://127.0.0.1:8011
-- Frontend app on http://127.0.0.1:3000
+- OMPC-SSB backend API on http://127.0.0.1:8010
+- OMPC-ZSCJ backend API on http://127.0.0.1:8011
+- OMPC-SSB frontend app on http://127.0.0.1:3000
+- OMPC-ZSCJ frontend app on http://127.0.0.1:3001
 - Cloudflare tunnel -> https://opc.mvpdark.top
 
 ### Check status
@@ -57,23 +58,39 @@ E:\OMPC-SSB\          <- sub-project: postgraduate-to-PhD content automation
   ├── README.md            project readme
   └── START_OPC.bat        project-level launcher (backend + frontend only)
 
-E:\OMPC-ZSCJ\          <- sub-project: knowledge base & trend collection service
-  ├── backend\             FastAPI application (port 8011)
+E:\OMPC-ZSCJ\          <- sub-project: knowledge base & trend collection service (independent)
+  ├── backend\             FastAPI application (port 8011) - knowledge base + trend collection
+  ├── frontend\            Next.js workspace (port 3001) - knowledge & trends admin UI
   ├── .venv\               Python virtual environment
-  ├── .env                 environment config
-  └── LOOP_LOG.md          loop engineering log
+  ├── prompts\             prompt templates (knowledge compile, review, style reference)
+  ├── .env                 environment config (SQLite mode, AUTH_REQUIRED=false)
+  ├── LOOP_LOG.md          loop engineering log
+  └── LOOP_LOG_1-100.md    archived loop log
 ```
 
 ## Services
 
-| Service  | Local URL                        | Public URL                          |
-|----------|----------------------------------|-------------------------------------|
-| Frontend | http://127.0.0.1:3000/?theme=mint | https://opc.mvpdark.top             |
-| Backend  | http://127.0.0.1:8010            | https://opc.mvpdark.top/api         |
-| ZSCJ     | http://127.0.0.1:8011            | https://opc.mvpdark.top/zscj/api    |
-| Health   | http://127.0.0.1:8010/health     | https://opc.mvpdark.top/health      |
-| API Docs | http://127.0.0.1:8010/docs       | https://opc.mvpdark.top/docs        |
-| Static   | http://127.0.0.1:8010/static     | https://opc.mvpdark.top/static      |
+| Service          | Port | Local URL                        | Public URL                          | Responsibility                                      |
+|------------------|------|----------------------------------|-------------------------------------|-----------------------------------------------------|
+| OMPC-SSB Frontend| 3000 | http://127.0.0.1:3000/?theme=mint| https://opc.mvpdark.top             | Postgraduate-to-PhD content automation workspace    |
+| OMPC-SSB Backend | 8010 | http://127.0.0.1:8010            | https://opc.mvpdark.top/api         | Content generation, review, image, auth             |
+| OMPC-ZSCJ Frontend| 3001| http://127.0.0.1:3001            | https://opc.mvpdark.top:3001        | Knowledge base & trend collection admin UI          |
+| OMPC-ZSCJ Backend| 8011 | http://127.0.0.1:8011            | https://opc.mvpdark.top/zscj/api    | Knowledge base CRUD, trend collection, compilation  |
+| Health (SSB)     | 8010 | http://127.0.0.1:8010/health     | https://opc.mvpdark.top/health      | SSB backend health check                            |
+| Health (ZSCJ)    | 8011 | http://127.0.0.1:8011/health     | https://opc.mvpdark.top/zscj/health | ZSCJ backend health check                           |
+| API Docs (SSB)   | 8010 | http://127.0.0.1:8010/docs       | https://opc.mvpdark.top/docs        | SSB Swagger UI                                      |
+| API Docs (ZSCJ)  | 8011 | http://127.0.0.1:8011/docs       | https://opc.mvpdark.top/zscj/docs   | ZSCJ Swagger UI                                     |
+| Static (SSB)     | 8010 | http://127.0.0.1:8010/static     | https://opc.mvpdark.top/static      | SSB static assets                                   |
+
+### Startup summary
+
+| Component         | Port | Start command                                      |
+|-------------------|------|----------------------------------------------------|
+| OMPC-SSB Backend  | 8010 | `cd E:\OMPC-SSB && START_OPC.bat` or `py scripts\start_local.py` |
+| OMPC-SSB Frontend | 3000 | `cd E:\OMPC-SSB\frontend && npm run dev`           |
+| OMPC-ZSCJ Backend | 8011 | `cd E:\OMPC-ZSCJ\backend && uvicorn app.main:app --host 0.0.0.0 --port 8011` |
+| OMPC-ZSCJ Frontend| 3001 | `cd E:\OMPC-ZSCJ\frontend && npm run dev`          |
+| All services      | -    | `cd E:\OMPC && py -3.14 start_ompc.py`            |
 
 ## Cloudflare Tunnel
 
@@ -84,18 +101,30 @@ E:\OMPC-ZSCJ\          <- sub-project: knowledge base & trend collection service
 - LAN IP: `192.168.10.88`
 
 Ingress rules (in order):
-1. `/api/*`    -> backend 8010
-2. `/static/*` -> backend 8010
-3. `/health/*` -> backend 8010
-4. `/docs/*`   -> backend 8010
-5. all other   -> frontend 3000
-6. catch-all   -> 404
+1. `/api/*`        -> SSB backend 8010
+2. `/zscj/api/*`   -> ZSCJ backend 8011
+3. `/static/*`     -> SSB backend 8010
+4. `/health/*`     -> SSB backend 8010
+5. `/docs/*`       -> SSB backend 8010
+6. all other       -> SSB frontend 3000
+7. catch-all       -> 404
 
 ## Database
+
+### OMPC-SSB
 
 Current mode: **SQLite** (local development)
 - Database: `E:\OMPC-SSB\artifacts\dev\opc-dev.db`
 - Config: `E:\OMPC-SSB\.env` -> `DATABASE_URL=sqlite:///E:/OMPC-SSB/artifacts/dev/opc-dev.db`
+
+### OMPC-ZSCJ
+
+Current mode: **SQLite** (local development)
+- Database: `E:\OMPC-ZSCJ\backend\zscj.db`
+- Config: `E:\OMPC-ZSCJ\backend\.env` -> `DATABASE_URL=sqlite:///./zscj.db`
+- Auth: `AUTH_REQUIRED=false` (default user for local development)
+
+### Docker mode
 
 Docker mode (PostgreSQL + Redis, requires Docker Desktop):
 ```powershell
@@ -110,9 +139,15 @@ DATABASE_URL=postgresql+psycopg://postgres:postgres@localhost:5432/opc
 ## Sub-projects
 
 - **OMPC-SSB** (`E:\OMPC-SSB`): Postgraduate-to-PhD Xiaohongshu lead-generation
-  content automation platform. See its `README.md` and `AGENTS.md` for details.
-- **OMPC-ZSCJ** (`E:\OMPC-ZSCJ`): Knowledge base and trend collection service
-  (separated from OMPC-SSB). Runs on port 8011. Admin-only.
+  content automation platform. Backend on port 8010, frontend on port 3000.
+  Handles content generation, review (with `review_model`), image generation,
+  and auth. See its `README.md` and `AGENTS.md` for details.
+- **OMPC-ZSCJ** (`E:\OMPC-ZSCJ`): Knowledge base and trend collection service,
+  separated from OMPC-SSB as an independent service. Backend on port 8011,
+  frontend on port 3001. Handles knowledge base CRUD, AI knowledge compilation,
+  trend material collection (xiaohongshu/douyin), keyword analysis, and
+  video transcript review. Admin-only (`AUTH_REQUIRED=false` by default for
+  local development).
 
 ## Notes
 

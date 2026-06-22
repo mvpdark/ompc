@@ -616,3 +616,58 @@
 无
 ### 自动修复
 无
+
+## Loop 157 - 2026-06-22
+### 检查结果
+- Python 语法检查：✅ 所有 .py 文件语法正确（start_ompc.py 通过 ast.parse，无异常）
+- 启动器导入检查：✅ start_ompc 模块导入成功，start_zscj() 与 ZSCJ_DIR 均可访问
+- docker-compose 验证：⏭️ 跳过（docker 命令不可用，未安装 Docker Desktop）
+- 配置一致性：✅ docker-compose.yml 含 zscj 服务（端口8011）；start_ompc.py 含 start_zscj() 与 ZSCJ_DIR；README.md 含 ZSCJ 服务说明
+### 偏差与建议
+无
+### 自动修复
+无
+
+## Loop 158 - 2026-06-22
+### 检查结果
+- Python 语法检查：✅ 所有 .py 文件语法正确（start_ompc.py 通过 ast.parse，无异常）
+- 启动器导入检查：✅ start_ompc 模块导入成功，start_zscj() 与 ZSCJ_DIR 均可访问
+- docker-compose 验证：⏭️ 跳过（docker 命令不可用，未安装 Docker Desktop）
+- 配置一致性：✅ docker-compose.yml 含 zscj 服务（端口8011）；start_ompc.py 含 start_zscj() 与 ZSCJ_DIR；README.md 含 ZSCJ 服务说明
+### 偏差与建议
+无
+### 自动修复
+无
+
+## Loop 159 - 2026-06-22
+### 检查结果
+- Python 语法检查：✅ 所有 .py 文件语法正确（start_ompc.py 通过 ast.parse，无异常）
+- 启动器导入检查：✅ start_ompc 模块导入成功，start_zscj() 与 ZSCJ_DIR 均可访问
+- docker-compose 验证：⏭️ 跳过（docker 命令不可用，未安装 Docker Desktop）
+- 配置一致性：✅ docker-compose.yml 含 zscj 服务（端口8011）；start_ompc.py 含 start_zscj() 与 ZSCJ_DIR；README.md 含 ZSCJ 服务说明
+### 偏差与建议
+无
+### 自动修复
+无
+
+## Loop 160 - 2026-06-22
+### 检查结果
+- Python 语法检查：✅ 所有 .py 文件语法正确（start_ompc.py 通过 ast.parse，无异常）
+- 启动器导入检查：✅ start_ompc 模块导入成功，start_zscj() 与 ZSCJ_DIR 均可访问
+- docker-compose 验证：⏭️ 跳过（docker 命令不可用，未安装 Docker Desktop）
+- 配置一致性：✅ docker-compose.yml 含 zscj 服务（端口8011）；start_ompc.py 含 start_zscj() 与 ZSCJ_DIR；README.md 含 ZSCJ 服务说明
+### 偏差与建议
+无
+### 自动修复
+无
+
+## Loop 161 - 2026-06-22
+### 检查结果
+- Python 语法检查：✅ 所有 .py 文件语法正确（start_ompc.py 通过 ast.parse，无异常）
+- 启动器导入检查：✅ start_ompc 模块导入成功，start_zscj() 与 ZSCJ_DIR 均可访问
+- docker-compose 验证：⏭️ 跳过（docker 命令不可用，未安装 Docker Desktop）
+- 配置一致性：✅ docker-compose.yml 含 zscj 服务（端口8011）；start_ompc.py 含 start_zscj() 与 ZSCJ_DIR；README.md 含 ZSCJ 服务说明
+### 偏差与建议
+无
+### 自动修复
+无
