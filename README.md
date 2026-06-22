@@ -16,6 +16,7 @@ py -3.14 start_ompc.py
 
 This starts:
 - Backend API on http://127.0.0.1:8010
+- ZSCJ API on http://127.0.0.1:8011
 - Frontend app on http://127.0.0.1:3000
 - Cloudflare tunnel -> https://opc.mvpdark.top
 
@@ -55,6 +56,12 @@ E:\OMPC-SSB\          <- sub-project: postgraduate-to-PhD content automation
   ├── LOOP_LOG.md          loop engineering log
   ├── README.md            project readme
   └── START_OPC.bat        project-level launcher (backend + frontend only)
+
+E:\OMPC-ZSCJ\          <- sub-project: knowledge base & trend collection service
+  ├── backend\             FastAPI application (port 8011)
+  ├── .venv\               Python virtual environment
+  ├── .env                 environment config
+  └── LOOP_LOG.md          loop engineering log
 ```
 
 ## Services
@@ -63,6 +70,7 @@ E:\OMPC-SSB\          <- sub-project: postgraduate-to-PhD content automation
 |----------|----------------------------------|-------------------------------------|
 | Frontend | http://127.0.0.1:3000/?theme=mint | https://opc.mvpdark.top             |
 | Backend  | http://127.0.0.1:8010            | https://opc.mvpdark.top/api         |
+| ZSCJ     | http://127.0.0.1:8011            | https://opc.mvpdark.top/zscj/api    |
 | Health   | http://127.0.0.1:8010/health     | https://opc.mvpdark.top/health      |
 | API Docs | http://127.0.0.1:8010/docs       | https://opc.mvpdark.top/docs        |
 | Static   | http://127.0.0.1:8010/static     | https://opc.mvpdark.top/static      |
@@ -103,6 +111,8 @@ DATABASE_URL=postgresql+psycopg://postgres:postgres@localhost:5432/opc
 
 - **OMPC-SSB** (`E:\OMPC-SSB`): Postgraduate-to-PhD Xiaohongshu lead-generation
   content automation platform. See its `README.md` and `AGENTS.md` for details.
+- **OMPC-ZSCJ** (`E:\OMPC-ZSCJ`): Knowledge base and trend collection service
+  (separated from OMPC-SSB). Runs on port 8011. Admin-only.
 
 ## Notes
 

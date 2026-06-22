@@ -1,8 +1,8 @@
 """
 OMPC workspace launcher.
 
-Starts the OMPC-SSB project (backend + frontend) and the Cloudflare tunnel
-from the OMPC shell directory.
+Starts the OMPC-SSB project (backend + frontend), the OMPC-ZSCJ service,
+and the Cloudflare tunnel from the OMPC shell directory.
 
 Usage:
     python start_ompc.py              # start all services
@@ -26,6 +26,10 @@ BACKEND_DIR = PROJECT_DIR / "backend"
 FRONTEND_DIR = PROJECT_DIR / "frontend"
 VENV_PYTHON = PROJECT_DIR / ".venv" / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
 TUNNEL_NAME = "opc-social-content-automation-live"
+
+# OMPC-ZSCJ (知识库/趋势采集独立服务)
+ZSCJ_DIR = SHELL_DIR.parent / "OMPC-ZSCJ" / "backend"
+ZSCJ_VENV_PYTHON = (SHELL_DIR.parent / "OMPC-ZSCJ" / ".venv" / ("Scripts/python.exe" if os.name == "nt" else "bin/python"))
 
 
 def port_is_open(port: int, host: str = "127.0.0.1") -> bool:
@@ -85,6 +89,32 @@ def start_frontend() -> None:
     print("  Frontend started on http://127.0.0.1:3000")
 
 
+def start_zscj() -> None:
+    """Start OMPC-ZSCJ (knowledge base / trend collection service) on port 8011."""
+    if port_is_open(8011):
+        print("  ZSCJ already running on http://127.0.0.1:8011")
+        return
+    venv = ZSCJ_VENV_PYTHON if ZSCJ_VENV_PYTHON.exists() else VENV_PYTHON
+    if not venv.exists():
+        print("  ERROR: ZSCJ .venv not found. Run: cd OMPC-ZSCJ/backend && python -m venv .venv")
+        return
+    if not ZSCJ_DIR.exists():
+        print("  ERROR: OMPC-ZSCJ/backend not found")
+        return
+    flags = subprocess.CREATE_NEW_PROCESS_GROUP if os.name == "nt" else 0
+    subprocess.Popen(
+        [
+            str(venv), "-m", "uvicorn", "app.main:app",
+            "--host", "0.0.0.0", "--port", "8011",
+        ],
+        cwd=str(ZSCJ_DIR),
+        creationflags=flags,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    print("  ZSCJ started on http://127.0.0.1:8011")
+
+
 def start_tunnel() -> None:
     cloudflared = shutil.which("cloudflared")
     if not cloudflared:
@@ -120,6 +150,7 @@ def stop_port(port: int) -> None:
 
 def stop_all() -> None:
     print("Stopping services...")
+    stop_port(8011)
     stop_port(8010)
     stop_port(3000)
     if os.name == "nt":
@@ -133,9 +164,11 @@ def print_status() -> None:
     print("OMPC Workspace Status:")
     print(f"  Shell:    {SHELL_DIR}")
     print(f"  Project:  {PROJECT_DIR}")
+    print(f"  ZSCJ:     {ZSCJ_DIR}")
     print(f"  LAN IP:   {ip or 'unknown'}")
     print()
     print(f"  Backend  8010: {'running' if port_is_open(8010) else 'stopped'}")
+    print(f"  ZSCJ     8011: {'running' if port_is_open(8011) else 'stopped'}")
     print(f"  Frontend 3000: {'running' if port_is_open(3000) else 'stopped'}")
     print(f"  Public URL:   https://opc.mvpdark.top")
     print(f"  Tunnel:       {'running' if _tunnel_running() else 'stopped'}")
@@ -170,9 +203,12 @@ def main() -> None:
     print("Starting OMPC workspace...")
     print(f"  Shell:   {SHELL_DIR}")
     print(f"  Project: {PROJECT_DIR}")
+    print(f"  ZSCJ:    {ZSCJ_DIR}")
     print()
     start_backend()
     time.sleep(2)
+    start_zscj()
+    time.sleep(1)
     start_frontend()
     time.sleep(1)
     start_tunnel()
@@ -180,6 +216,7 @@ def main() -> None:
     print("Services starting:")
     print("  Frontend: http://127.0.0.1:3000/?theme=mint")
     print("  Backend:  http://127.0.0.1:8010")
+    print("  ZSCJ:     http://127.0.0.1:8011")
     print("  Public:   https://opc.mvpdark.top")
     print()
     print("Use --status to check, --stop to stop all.")

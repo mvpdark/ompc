@@ -27,5 +27,31 @@ services:
       retries: 3
       start_period: 5s
 
+  zscj:
+    build:
+      context: ../OMPC-ZSCJ/backend
+      dockerfile: Dockerfile
+    ports:
+      - "8011:8011"
+    environment:
+      DATABASE_URL: sqlite:///./zscj.db
+      JWT_SECRET_KEY: replace-with-a-long-random-secret
+      AUTH_REQUIRED: "false"
+      FRONTEND_ORIGIN: http://localhost:3000
+    volumes:
+      - zscj_data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8011/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
 volumes:
   postgres_data:
+  zscj_data:
