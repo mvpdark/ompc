@@ -1,0 +1,39 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+.env
+.env.*
+*.db
+*.sqlite
+*.sqlite3
+.git/
+.gitignore
+logs/
+*.log
+artifacts/
+node_modules/
+.next/
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+# PowerShell and batch scripts (not needed in container)
+*.ps1
+*.bat
+# Screenshots and images (not needed in container)
+*.png
+*.jpg
+*.jpeg
+*.gif
+# Markdown logs
+LOOP_LOG*.md
+# Fixed files (dev only)
+fixed_files/
+# Sensitive
+cf-config.yml
+.cloudflared.pid
