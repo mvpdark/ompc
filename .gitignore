@@ -17,6 +17,23 @@ env/
 .env
 .env.local
 .env.*.local
+.env.bak*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Artifacts & generated
+artifacts/
+logs/
+*.log
+
+# Node
+node_modules/
+
+# Docker volumes
+data/
 
 # IDE
 .vscode/
@@ -28,11 +45,10 @@ env/
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
-
-# Node (if applicable)
-node_modules/
-
-# Docker volumes
-data/
+# Cloudflare
+cf-config.yml
+*.json
+!package.json
+!tsconfig.json
+!docker-compose.yml
+!.env.example

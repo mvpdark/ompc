@@ -1,12 +1,13 @@
 services:
   postgres:
     image: pgvector/pgvector:pg16
+    restart: unless-stopped
     environment:
       POSTGRES_DB: opc
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -18,8 +19,9 @@ services:
 
   redis:
     image: redis:7-alpine
+    restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -28,29 +30,26 @@ services:
       start_period: 5s
 
   zscj:
+    restart: unless-stopped
     build:
       context: ../OMPC-ZSCJ/backend
       dockerfile: Dockerfile
     ports:
-      - "8011:8011"
+      - "127.0.0.1:60002:60002"
     environment:
-      DATABASE_URL: sqlite:///./zscj.db
-      JWT_SECRET_KEY: replace-with-a-long-random-secret
-      AUTH_REQUIRED: "false"
-      FRONTEND_ORIGIN: http://localhost:3000
+      DATABASE_URL: sqlite:////app/data/zscj.db
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY is required}
+      AUTH_REQUIRED: "true"
+      FRONTEND_ORIGIN: http://localhost:60000
+      ENVIRONMENT: production
     volumes:
       - zscj_data:/app/data
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8011/health')"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:60002/health')"]
       interval: 15s
       timeout: 5s
       retries: 3
-      start_period: 10s
+      start_period: 30s
 
 volumes:
   postgres_data:

@@ -7,47 +7,55 @@ title OMPC Workspace Launcher
 echo.
 echo ========================================
 echo   OMPC Workspace Launcher
-echo   Shell:  E:\OMPC
-echo   Project: E:\OMPC-SSB
+echo   Shell:  C:\TRAE\OMPC
+echo   Project: C:\TRAE\OMPC-SSB
 echo ========================================
 echo.
 
-set "PROJECT_DIR=E:\OMPC-SSB"
-set "PYTHON_EXE=%PROJECT_DIR%\.venv\Scripts\python.exe"
+REM ------------------------------------------------------------------
+REM Bug 3: .bat delegates to start_ompc.py (new version with health
+REM        checks). Bugs 1 & 2 (startup delays + absolute cf-config
+REM        path) are handled inside the Python script, so delegating
+REM        resolves all three issues in one place.
+REM ------------------------------------------------------------------
 
+REM Prefer the project venv Python; fall back to system python on PATH.
+set "PYTHON_EXE=%~dp0..\OMPC-SSB\.venv\Scripts\python.exe"
 if not exist "%PYTHON_EXE%" (
-  echo Python venv not found at %PYTHON_EXE%
-  echo Run: cd %PROJECT_DIR% ^&^& python scripts\setup_local.py
-  goto :fail
+    echo   Project venv not found, trying system python ...
+    where python >nul 2>nul
+    if errorlevel 1 (
+        echo ERROR: Python not found.
+        echo   Expected venv: %PYTHON_EXE%
+        echo   Or add python.exe to PATH.
+        goto :fail
+    )
+    set "PYTHON_EXE=python"
 )
 
-echo [1/3] Starting backend on http://127.0.0.1:8010 ...
-start "OMPC-SSB Backend" /D "%PROJECT_DIR%\backend" "%PYTHON_EXE%" -m uvicorn app.main:app --host 0.0.0.0 --port 8010
+REM Delegate to the Python launcher (health checks + delays + abs paths).
+echo Launching start_ompc.py ...
+"%PYTHON_EXE%" "%~dp0start_ompc.py" %*
+set "EXIT_CODE=%errorlevel%"
 
-echo [2/3] Starting frontend on http://127.0.0.1:3000 ...
-start "OMPC-SSB Frontend" /D "%PROJECT_DIR%\frontend" npm run dev:lan
-
-echo [3/3] Starting Cloudflare tunnel ...
-start "OMPC Cloudflare Tunnel" cloudflared tunnel run opc-social-content-automation-live
+REM Open the app in browser only when starting services (no --status/--stop).
+if "%~1"=="" (
+    if "%EXIT_CODE%"=="0" (
+        timeout /t 2 /nobreak >nul
+        start "" "http://127.0.0.1:60000/?theme=mint"
+    )
+)
 
 echo.
-echo ========================================
-echo   OMPC services starting:
-echo.
-echo   Frontend:  http://127.0.0.1:3000/?theme=mint
-echo   Backend:   http://127.0.0.1:8010
-echo   Public:    https://opc.mvpdark.top
-echo.
-echo   Close this window to keep services running.
-echo   Or press any key to open the app in browser.
-echo ========================================
-echo.
+if "%EXIT_CODE%"=="0" (
+    echo OMPC launcher finished successfully.
+) else (
+    echo OMPC launcher exited with code %EXIT_CODE%.
+)
 
-start "" "http://127.0.0.1:3000/?theme=mint"
-
-if /I "%OMPC_LAUNCHER_NO_PAUSE%"=="1" exit /b 0
+if /I "%OMPC_LAUNCHER_NO_PAUSE%"=="1" exit /b %EXIT_CODE%
 pause
-exit /b 0
+exit /b %EXIT_CODE%
 
 :fail
 if /I "%OMPC_LAUNCHER_NO_PAUSE%"=="1" exit /b 1
