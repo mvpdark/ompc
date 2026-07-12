@@ -168,11 +168,11 @@ def start_zscj() -> None:
     if port_is_open(60002):
         print("  ZSCJ already running on http://127.0.0.1:60002")
         return
-    venv = ZSCJ_VENV_PYTHON if ZSCJ_VENV_PYTHON.exists() else VENV_PYTHON
-    if not venv.exists():
+    if not ZSCJ_VENV_PYTHON.exists():
         print("  ERROR: ZSCJ .venv not found. Run: cd OMPC-ZSCJ/backend && python -m venv .venv")
         _failed_services.append("ZSCJ (port 60002)")
         return
+    venv = ZSCJ_VENV_PYTHON
     if not ZSCJ_DIR.exists():
         print("  ERROR: OMPC-ZSCJ/backend not found")
         _failed_services.append("ZSCJ (port 60002)")
