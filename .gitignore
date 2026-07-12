@@ -52,3 +52,8 @@ cf-config.yml
 !tsconfig.json
 !docker-compose.yml
 !.env.example
+# Audit & scan reports
+*audit*
+*scan*
+*report*
+!LOOP_LOG.md
