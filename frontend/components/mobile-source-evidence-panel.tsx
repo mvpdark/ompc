@@ -1,0 +1,303 @@
+"use client";
+
+import { BookOpen, ChevronDown, ExternalLink, Globe, Loader2, Search } from "lucide-react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+import {
+  generationSourceContextStats,
+  type GenerationKnowledgeSource,
+  type GenerationSourceContext
+} from "@/lib/generated-assets";
+import {
+  knowledgeCategoryLabel,
+  knowledgeItemExcerpt,
+  knowledgeItemTitle,
+  type KnowledgeItem
+} from "@/lib/knowledge-api";
+import { scrollElementIntoView } from "@/lib/scroll-into-view";
+import { PromotionBriefSummary } from "@/components/promotion-brief-summary";
+import { SourceCardSummary } from "@/components/source-card-summary";
+
+const mobileEvidenceExcerptClass =
+  "mt-1 max-h-28 overflow-y-auto whitespace-pre-wrap break-words pr-1 text-[11px] font-medium leading-5 text-muted";
+
+function mobileSourceKnowledgeItemToKnowledgeItem(item: GenerationKnowledgeSource): KnowledgeItem {
+  return {
+    category: item.category ?? null,
+    content: item.content,
+    id: item.id,
+    match_type: item.match_type ?? undefined,
+    score: item.score ?? null,
+    title: item.title
+  };
+}
+
+type MobileEvidenceSection = "knowledge" | "web" | null;
+
+export const MobileSourceEvidencePanel = memo(function MobileSourceEvidencePanel({
+  error,
+  fallbackKnowledgeQuery,
+  onPreview,
+  previewBusy,
+  sourceContext
+}: {
+  error?: string | null;
+  fallbackKnowledgeQuery?: string;
+  onPreview: () => void;
+  previewBusy: boolean;
+  sourceContext: GenerationSourceContext | null;
+}) {
+  const knowledgeItems = useMemo(() => sourceContext?.knowledge_items ?? [], [sourceContext]);
+  const sourceCards = useMemo(() => sourceContext?.source_cards ?? [], [sourceContext]);
+  const webSearch = sourceContext?.web_search;
+  const webResults = useMemo(() => webSearch?.results ?? [], [webSearch]);
+  const visibleKnowledgeItems = useMemo(() => knowledgeItems.slice(0, 3), [knowledgeItems]);
+  const visibleWebResults = useMemo(() => webResults.slice(0, 3), [webResults]);
+  const {
+    hasEvidence,
+    missingRequiredWebResults,
+    totalCount,
+    webEvidenceCountLabel,
+    webRequired
+  } = useMemo(() => generationSourceContextStats(sourceContext), [sourceContext]);
+  const visibleKnowledgeQuery = useMemo(
+    () => sourceContext?.knowledge_query || fallbackKnowledgeQuery?.trim() || "",
+    [sourceContext, fallbackKnowledgeQuery]
+  );
+  const [openEvidenceSection, setOpenEvidenceSection] = useState<MobileEvidenceSection>(null);
+  const knowledgeListRef = useRef<HTMLDivElement | null>(null);
+  const webListRef = useRef<HTMLDivElement | null>(null);
+  const knowledgeOpen = openEvidenceSection === "knowledge";
+  const webOpen = openEvidenceSection === "web";
+  const handleToggleKnowledge = useCallback(() => {
+    setOpenEvidenceSection((prev) => (prev === "knowledge" ? null : "knowledge"));
+  }, []);
+  const handleToggleWeb = useCallback(() => {
+    setOpenEvidenceSection((prev) => (prev === "web" ? null : "web"));
+  }, []);
+
+  useEffect(() => {
+    setOpenEvidenceSection(null);
+  }, [sourceContext, visibleKnowledgeQuery]);
+
+  useEffect(() => {
+    if (!openEvidenceSection) {
+      return;
+    }
+    const target =
+      openEvidenceSection === "knowledge" ? knowledgeListRef.current : webListRef.current;
+    if (!target) {
+      return;
+    }
+    const frame = window.requestAnimationFrame(() => {
+      scrollElementIntoView(target);
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [openEvidenceSection]);
+
+  return (
+    <div
+      className="mt-4 rounded-[24px] border border-white/[0.86] bg-[rgba(255,253,247,0.84)] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.78)]"
+      data-project-swipe-ignore="true"
+      data-testid="mobile-source-evidence"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="text-xs font-black text-ink">检索依据</div>
+          <p className="mt-1 text-[11px] font-medium leading-5 text-muted">
+            点击下方来源类型展开核对，确认后再复制发布。
+          </p>
+        </div>
+        <span
+          className={[
+            "rounded-full px-2.5 py-1 text-[11px] font-black",
+            missingRequiredWebResults
+              ? "bg-amber/15 text-amber-ink"
+              : hasEvidence
+                ? "bg-sage text-moss"
+                : "bg-white text-muted"
+          ].join(" ")}
+        >
+          {missingRequiredWebResults ? "缺联网" : hasEvidence ? `${totalCount} 条` : "待查看"}
+        </span>
+      </div>
+      {visibleKnowledgeQuery ? (
+        <p className="mt-2 rounded-[16px] bg-white/70 px-3 py-2 text-[11px] font-medium leading-5 text-muted">
+          检索词：{visibleKnowledgeQuery}
+        </p>
+      ) : null}
+      <button
+        className="mt-3 flex h-10 w-full touch-manipulation items-center justify-center gap-2 rounded-full border border-white/[0.92] bg-white/80 text-xs font-black text-moss shadow-[inset_0_1px_0_rgba(255,255,255,0.78)] active:scale-[0.99]"
+        data-testid="mobile-source-preview-button"
+        disabled={previewBusy}
+        onClick={onPreview}
+        type="button"
+      >
+        {previewBusy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Search className="h-3.5 w-3.5" />}
+        {previewBusy ? "正在检索" : hasEvidence ? "重新查看依据" : "查看检索依据"}
+      </button>
+      {error ? <p className="mt-2 text-[11px] font-medium leading-5 text-coral">{error}</p> : null}
+      {missingRequiredWebResults ? (
+        <div
+          className="mt-3 rounded-[18px] border border-amber/40 bg-amber/10 px-3 py-2 text-[11px] font-semibold leading-5 text-amber-ink"
+          data-testid="mobile-source-required-web-warning"
+        >
+          此选题需要联网来源；未拿到 Tavily 结果前，不要让模型猜测学校、价格、logo 或排名结论。
+        </div>
+      ) : null}
+      <SourceCardSummary cards={sourceCards} testId="mobile-source-card-summary" variant="mobile" />
+      <PromotionBriefSummary
+        sourceContext={sourceContext}
+        testId="mobile-source-promotion-brief"
+        variant="mobile"
+      />
+      <div
+        className="mt-3 rounded-[20px] border border-white/[0.86] bg-white/60 p-1.5"
+        data-testid="mobile-source-evidence-switcher"
+      >
+        <div className="grid grid-cols-2 gap-1.5">
+          <button
+            aria-controls="mobile-source-knowledge-list"
+            aria-expanded={knowledgeOpen}
+            className={[
+              "flex min-h-11 touch-manipulation items-center justify-between gap-2 rounded-[16px] px-3 py-2 text-left active:scale-[0.99]",
+              knowledgeOpen ? "bg-sage text-ink" : "bg-white/70 text-muted"
+            ].join(" ")}
+            data-testid="mobile-source-knowledge-toggle"
+            onClick={handleToggleKnowledge}
+            type="button"
+          >
+            <span>
+              <span className="block text-[11px] font-black">知识库引用</span>
+              <span className="mt-0.5 flex flex-wrap items-center gap-1 text-[10px] font-black text-moss">
+                <span>{knowledgeItems.length} 条</span>
+                <span className="rounded-full bg-white/70 px-1.5 py-0.5 text-[9px] text-muted">
+                  {knowledgeOpen ? "已展开" : "点击展开"}
+                </span>
+              </span>
+            </span>
+            <ChevronDown
+              className={[
+                "h-3.5 w-3.5 shrink-0 transition-transform",
+                knowledgeOpen ? "rotate-180" : ""
+              ].join(" ")}
+            />
+          </button>
+          <button
+            aria-controls="mobile-source-web-list"
+            aria-expanded={webOpen}
+            className={[
+              "flex min-h-11 touch-manipulation items-center justify-between gap-2 rounded-[16px] px-3 py-2 text-left active:scale-[0.99]",
+              webOpen ? "bg-sage text-ink" : "bg-white/70 text-muted"
+            ].join(" ")}
+            data-testid="mobile-source-web-toggle"
+            onClick={handleToggleWeb}
+            type="button"
+          >
+            <span>
+              <span className="block text-[11px] font-black">联网搜索</span>
+              <span className="mt-0.5 flex flex-wrap items-center gap-1 text-[10px] font-black text-moss">
+                <span>{webEvidenceCountLabel}</span>
+                <span className="rounded-full bg-white/70 px-1.5 py-0.5 text-[9px] text-muted">
+                  {webOpen ? "已展开" : "点击展开"}
+                </span>
+              </span>
+            </span>
+            <ChevronDown
+              className={[
+                "h-3.5 w-3.5 shrink-0 transition-transform",
+                webOpen ? "rotate-180" : ""
+              ].join(" ")}
+            />
+          </button>
+        </div>
+      </div>
+      {knowledgeOpen ? (
+        <div
+          className="mt-3 scroll-mt-24 space-y-2"
+          data-testid="mobile-source-knowledge-list"
+          id="mobile-source-knowledge-list"
+          ref={knowledgeListRef}
+        >
+          {visibleKnowledgeItems.length ? (
+            visibleKnowledgeItems.map((item, index) => {
+              const knowledgeItem = mobileSourceKnowledgeItemToKnowledgeItem(item);
+              return (
+                <article className="mobile-source-evidence-result-card rounded-[18px] border border-white/[0.86] bg-white/70 px-3 py-2" key={`${item.id}-${index}`}>
+                  <div className="flex items-start justify-between gap-2">
+                    <h4 className="line-clamp-2 text-xs font-black leading-5 text-ink">
+                      {knowledgeItemTitle(knowledgeItem)}
+                    </h4>
+                    <span className="shrink-0 rounded-full bg-sage px-2 py-0.5 text-[10px] font-black text-moss">
+                      {knowledgeCategoryLabel(knowledgeItem.category)}
+                    </span>
+                  </div>
+                  <p className={mobileEvidenceExcerptClass}>
+                    {knowledgeItemExcerpt(knowledgeItem, 240)}
+                  </p>
+                </article>
+              );
+            })
+          ) : (
+            <div className="flex flex-col items-center gap-1.5 rounded-[18px] border border-white/[0.86] bg-white/70 px-3 py-3 text-center text-[11px] font-medium leading-5 text-muted">
+              <BookOpen className="h-5 w-5 text-sage/70" strokeWidth={2} />
+              <p>暂无知识库引用，请先点击“查看检索依据”。</p>
+            </div>
+          )}
+        </div>
+      ) : null}
+      {webOpen ? (
+        <div
+          className="mt-3 scroll-mt-24 space-y-2"
+          data-testid="mobile-source-web-list"
+          id="mobile-source-web-list"
+          ref={webListRef}
+        >
+          {webSearch?.query ? (
+            <p className="break-words rounded-[16px] bg-white/70 px-3 py-2 text-[11px] font-medium leading-5 text-muted">
+              Tavily 查询：{webSearch.query}
+            </p>
+          ) : null}
+          {webSearch?.answer ? (
+            <p className="rounded-[16px] border border-white/[0.86] bg-white/80 px-3 py-2 text-[11px] font-medium leading-5 text-ink">
+              <span className="font-black text-moss">Tavily 摘要：</span>
+              {webSearch.answer}
+              <span className="mt-1 block text-muted">摘要仅作线索，发布前请点开下方 URL 核对原文。</span>
+            </p>
+          ) : null}
+          {visibleWebResults.length ? (
+            visibleWebResults.map((item, index) => (
+              <a
+                aria-label={`打开联网来源：${item.title}`}
+                className="mobile-source-evidence-result-card block rounded-[18px] border border-white/[0.86] bg-white/70 px-3 py-2"
+                href={item.url}
+                key={`${item.url}-${item.title}-${index}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <h4 className="line-clamp-2 text-xs font-black leading-5 text-ink">{item.title}</h4>
+                  <ExternalLink className="mt-1 h-3.5 w-3.5 shrink-0 text-muted" />
+                </div>
+                <p className="mt-1 truncate text-[10px] font-medium text-moss">{item.url}</p>
+                <p className={mobileEvidenceExcerptClass}>{item.content}</p>
+              </a>
+            ))
+          ) : (
+            <div className="flex flex-col items-center gap-1.5 rounded-[18px] border border-amber/40 bg-amber/10 px-3 py-3 text-center text-[11px] font-medium leading-5 text-amber-ink">
+              <Globe className="h-5 w-5 text-amber-ink/60" strokeWidth={2} />
+              <p>{webRequired
+                ? "这个选题需要实时资料，但本次还没拿到可见联网搜索结果；请换关键词、检查 Tavily，或只写核验框架，不要让模型猜测学校、价格、logo 或排名结论。"
+                : "当前选题未触发联网搜索；如涉及学校、价格、logo、排名或市场信息，请先重新查看依据。"}</p>
+            </div>
+          )}
+        </div>
+      ) : null}
+      {sourceContext?.review_note ? (
+        <div className="mt-3 border-l-4 border-amber/60 pl-3 text-[11px] font-medium leading-5 text-muted">
+          {sourceContext.review_note}
+        </div>
+      ) : null}
+    </div>
+  );
+});

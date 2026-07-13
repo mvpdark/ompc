@@ -1,0 +1,1130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-amber-ink {
+    color: rgb(var(--amber-ink));
+  }
+  .bg-moss-gradient {
+    background-image: linear-gradient(180deg, rgb(var(--moss)), rgb(var(--moss) / 0.82));
+  }
+  .shadow-moss-lg {
+    box-shadow: 0 16px 30px rgb(var(--moss) / 0.28), inset 0 1px 0 rgb(255 255 255 / 0.24);
+  }
+  .shadow-moss-md {
+    box-shadow: 0 14px 28px rgb(var(--moss) / 0.24);
+  }
+  .shadow-moss-sm {
+    box-shadow: 0 12px 26px rgb(var(--moss) / 0.18);
+  }
+  .shadow-moss-nav {
+    box-shadow: 0 12px 24px rgb(var(--moss) / 0.24), inset 0 1px 0 rgb(255 255 255 / 0.22);
+  }
+}
+
+:root {
+  --apple-font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "PingFang SC", "Hiragino Sans GB", "Helvetica Neue", Arial, sans-serif;
+  --ink: 29 29 31;
+  --paper: 247 248 244;
+  --mist: 239 242 235;
+  --line: 210 217 207;
+  --muted: 104 112 105;
+  --moss: 44 151 88;
+  --coral: 255 59 48;
+  --blush: 255 241 236;
+  --steel: 0 122 255;
+  --amber: 255 159 10;
+  --amber-ink: 138 97 16;
+  --sand: 222 216 204;
+  --sage: 236 244 238;
+  --cream: 248 245 236;
+  --shell: 216 230 220;
+  --glass: 255 255 255;
+  --glass-strong: 0.82;
+  --glass-panel: 0.74;
+  --glass-control: 0.68;
+  --glass-subtle: 0.54;
+  --glass-highlight: 255 255 255;
+  --selected-bg: var(--ink);
+  --selected-text: 255 255 255;
+  --surface-grid: var(--ink);
+}
+
+.theme-apple {
+  --ink: 29 29 31;
+  --paper: 247 248 244;
+  --mist: 239 242 235;
+  --line: 210 217 207;
+  --muted: 104 112 105;
+  --moss: 44 151 88;
+  --coral: 255 59 48;
+  --blush: 255 241 236;
+  --steel: 0 122 255;
+  --amber: 255 159 10;
+  --amber-ink: 138 97 16;
+  --sand: 222 216 204;
+  --sage: 236 244 238;
+  --cream: 248 245 236;
+  --shell: 216 230 220;
+  --glass: 255 255 255;
+  --selected-bg: var(--ink);
+  --selected-text: 255 255 255;
+  --surface-grid: var(--ink);
+}
+
+.theme-mint {
+  --ink: 18 49 45;
+  --paper: 238 248 244;
+  --mist: 227 241 236;
+  --line: 201 223 215;
+  --muted: 95 114 109;
+  --moss: 52 128 92;
+  --coral: 215 101 71;
+  --steel: 47 115 167;
+  --amber: 201 143 46;
+  --glass: 250 255 252;
+  --selected-bg: 24 76 62;
+  --selected-text: 255 255 255;
+  --surface-grid: 52 128 92;
+  --cream: 238 248 244;
+  --shell: 201 223 215;
+}
+
+.theme-warm {
+  --ink: 45 39 43;
+  --paper: 250 247 244;
+  --mist: 246 238 232;
+  --line: 226 213 205;
+  --muted: 118 102 96;
+  --moss: 80 139 116;
+  --coral: 207 96 86;
+  --steel: 78 121 158;
+  --amber: 190 127 55;
+  --glass: 255 252 248;
+  --selected-bg: 83 56 48;
+  --selected-text: 255 255 255;
+  --surface-grid: 190 127 55;
+  --cream: 250 247 244;
+  --shell: 226 213 205;
+}
+
+.theme-graphite {
+  --ink: 241 245 249;
+  --paper: 18 20 24;
+  --mist: 34 38 46;
+  --line: 68 76 90;
+  --muted: 165 174 188;
+  --moss: 79 209 150;
+  --coral: 255 118 118;
+  --blush: 40 28 30;
+  --steel: 118 168 255;
+  --amber: 245 183 77;
+  --amber-ink: 245 183 77;
+  --sand: 62 58 52;
+  --sage: 28 42 38;
+  --glass: 25 29 38;
+  --glass-strong: 0.78;
+  --glass-panel: 0.68;
+  --glass-control: 0.62;
+  --glass-subtle: 0.48;
+  --glass-highlight: 255 255 255;
+  --selected-bg: 118 168 255;
+  --selected-text: 18 20 24;
+  --surface-grid: 118 168 255;
+  --cream: 18 20 24;
+  --shell: 34 38 46;
+}
+
+.theme-cyberpunk {
+  --ink: 232 250 255;
+  --paper: 5 8 18;
+  --mist: 13 22 39;
+  --line: 47 86 112;
+  --muted: 136 185 207;
+  --moss: 53 242 177;
+  --coral: 255 79 161;
+  --blush: 30 18 28;
+  --steel: 77 199 255;
+  --amber: 245 198 84;
+  --amber-ink: 245 198 84;
+  --sand: 42 36 30;
+  --sage: 10 24 20;
+  --glass: 8 17 34;
+  --glass-strong: 0.82;
+  --glass-panel: 0.7;
+  --glass-control: 0.62;
+  --glass-subtle: 0.5;
+  --glass-highlight: 112 231 255;
+  --selected-bg: 53 242 177;
+  --selected-text: 5 8 18;
+  --surface-grid: 77 199 255;
+  --cream: 5 8 18;
+  --shell: 13 22 39;
+}
+
+.theme-editorial {
+  --ink: 35 32 30;
+  --paper: 247 243 236;
+  --mist: 239 232 221;
+  --line: 216 206 192;
+  --muted: 111 101 92;
+  --moss: 95 132 110;
+  --coral: 178 86 70;
+  --steel: 82 111 143;
+  --amber: 170 117 60;
+  --glass: 255 252 245;
+  --selected-bg: 51 43 36;
+  --selected-text: 255 252 245;
+  --surface-grid: 170 117 60;
+  --cream: 247 243 236;
+  --shell: 216 206 192;
+}
+
+.theme-candy {
+  --ink: 61 36 58;
+  --paper: 253 246 250;
+  --mist: 250 232 242;
+  --line: 231 199 216;
+  --muted: 132 91 119;
+  --moss: 83 166 136;
+  --coral: 223 86 136;
+  --steel: 128 111 214;
+  --amber: 226 151 74;
+  --glass: 255 250 253;
+  --selected-bg: 250 232 242;
+  --selected-text: 61 36 58;
+  --surface-grid: 223 86 136;
+  --cream: 253 246 250;
+  --shell: 231 199 216;
+}
+
+.theme-ocean {
+  --ink: 22 50 68;
+  --paper: 238 247 250;
+  --mist: 223 240 247;
+  --line: 190 216 228;
+  --muted: 80 112 130;
+  --moss: 54 151 138;
+  --coral: 205 94 90;
+  --steel: 42 126 184;
+  --amber: 199 142 61;
+  --glass: 247 253 255;
+  --selected-bg: 25 82 118;
+  --selected-text: 255 255 255;
+  --surface-grid: 42 126 184;
+  --cream: 238 247 250;
+  --shell: 190 216 228;
+}
+
+.theme-brutalist {
+  --ink: 16 16 16;
+  --paper: 246 246 240;
+  --mist: 232 232 222;
+  --line: 24 24 24;
+  --muted: 76 76 68;
+  --moss: 40 120 88;
+  --coral: 205 55 55;
+  --steel: 42 88 166;
+  --amber: 180 126 24;
+  --glass: 255 255 248;
+  --glass-strong: 0.88;
+  --glass-panel: 0.82;
+  --glass-control: 0.74;
+  --glass-subtle: 0.66;
+  --selected-bg: 16 16 16;
+  --selected-text: 246 246 240;
+  --surface-grid: 16 16 16;
+  --cream: 246 246 240;
+  --shell: 232 232 222;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: rgb(var(--paper));
+  color: rgb(var(--ink));
+  font-family: var(--apple-font-stack) !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: var(--apple-font-stack) !important;
+  font-size: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid rgb(var(--steel) / 0.9);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgb(var(--steel) / 0.16);
+}
+
+:where(input, select, textarea):focus-visible {
+  border-color: rgb(var(--steel) / 0.86);
+}
+
+.opc-mobile-shell,
+.opc-mobile-shell * {
+  scrollbar-width: none;
+}
+
+.opc-mobile-shell::-webkit-scrollbar,
+.opc-mobile-shell *::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.opc-mobile-shell :where(a, button):focus-visible {
+  outline: 2px solid rgb(var(--moss) / 0.72);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgb(var(--moss) / 0.16);
+}
+
+.workspace-shell {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 18% 10%, rgb(var(--moss) / 0.11), transparent 30%),
+    radial-gradient(circle at 94% 4%, rgb(var(--steel) / 0.09), transparent 27%),
+    linear-gradient(180deg, rgb(var(--glass) / 0.44), transparent 26%),
+    rgb(var(--paper));
+}
+
+.workspace-shell::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  background-image:
+    linear-gradient(rgb(var(--surface-grid) / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--surface-grid) / 0.024) 1px, transparent 1px);
+  background-size: 38px 38px;
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.56), transparent 72%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.56), transparent 72%);
+}
+
+.workspace-shell::after {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  opacity: 0.18;
+  background-image:
+    radial-gradient(circle at 25% 25%, rgb(var(--ink) / 0.09) 0 1px, transparent 1px),
+    radial-gradient(circle at 75% 65%, rgb(var(--moss) / 0.08) 0 1px, transparent 1px);
+  background-size: 18px 18px, 26px 26px;
+}
+
+.workspace-primary-nav {
+  scrollbar-width: none;
+}
+
+.workspace-primary-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.glass-sidebar,
+.glass-topbar,
+.glass-panel,
+.glass-control,
+.glass-subtle {
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
+}
+
+.glass-sidebar,
+.glass-topbar {
+  background: rgb(var(--glass) / var(--glass-strong));
+  box-shadow:
+    inset -1px 0 0 rgb(var(--glass-highlight) / 0.48),
+    0 1px 0 rgb(var(--ink) / 0.035);
+}
+
+.glass-panel {
+  background: rgb(var(--glass) / var(--glass-panel));
+  border-color: rgb(var(--line) / 0.74);
+  box-shadow:
+    0 16px 44px rgb(var(--ink) / 0.045),
+    0 1px 0 rgb(var(--ink) / 0.035),
+    inset 0 1px 0 rgb(var(--glass-highlight) / 0.56);
+}
+
+.glass-control {
+  background: rgb(var(--glass) / var(--glass-control));
+  border-color: rgb(var(--line) / 0.78);
+  box-shadow: inset 0 1px 0 rgb(var(--glass-highlight) / 0.44);
+}
+
+.glass-selected {
+  background: rgb(var(--selected-bg) / 0.9);
+  color: rgb(var(--selected-text));
+  box-shadow:
+    0 10px 28px rgb(var(--selected-bg) / 0.2),
+    inset 0 1px 0 rgb(var(--glass-highlight) / 0.2);
+}
+
+.glass-subtle {
+  background: rgb(var(--glass) / var(--glass-subtle));
+  border-color: rgb(var(--line) / 0.64);
+}
+
+.workspace-shell .glass-panel {
+  border-radius: 10px !important;
+}
+
+.workspace-shell .rounded-\[30px\],
+.workspace-shell .rounded-\[28px\],
+.workspace-shell .rounded-\[26px\],
+.workspace-shell .rounded-\[24px\],
+.workspace-shell .rounded-\[22px\],
+.workspace-shell .rounded-\[20px\],
+.workspace-shell .rounded-\[18px\],
+.workspace-shell .rounded-\[16px\],
+.workspace-shell .rounded-\[14px\] {
+  border-radius: 10px !important;
+}
+
+.workspace-shell .glass-control,
+.workspace-shell .glass-subtle,
+.workspace-shell :where(input, select, textarea) {
+  border-radius: 8px;
+}
+
+.workspace-shell :where(a, button) {
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease,
+    opacity 180ms ease;
+}
+
+.workspace-shell :where(a, button):not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+.workspace-shell :where(a, button):not(:disabled):active {
+  transform: translateY(0);
+}
+
+.pc-shell-sidebar {
+  background:
+    linear-gradient(180deg, rgb(var(--glass) / 0.9), rgb(var(--glass) / 0.7)),
+    rgb(var(--paper));
+}
+
+.pc-shell-topbar {
+  background:
+    linear-gradient(180deg, rgb(var(--glass) / 0.88), rgb(var(--glass) / 0.74));
+}
+
+.pc-content-frame {
+  min-height: calc(100vh - 76px);
+}
+
+.workspace-shell .shadow-panel {
+  box-shadow:
+    0 1px 0 rgb(var(--ink) / 0.04),
+    0 18px 48px rgb(var(--ink) / 0.055);
+}
+
+.workspace-shell table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.workspace-shell thead {
+  background: rgb(var(--mist) / 0.62);
+}
+
+.workspace-shell tbody tr {
+  transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.workspace-shell tbody tr:hover {
+  background: rgb(var(--moss) / 0.055);
+}
+
+.workspace-shell :where(th, td) {
+  border-color: rgb(var(--line) / 0.74);
+}
+
+.theme-graphite .bg-white,
+.theme-cyberpunk .bg-white {
+  background-color: rgb(var(--glass) / 0.58) !important;
+}
+
+.theme-graphite input,
+.theme-graphite textarea,
+.theme-graphite select,
+.theme-cyberpunk input,
+.theme-cyberpunk textarea,
+.theme-cyberpunk select {
+  color: rgb(var(--ink));
+  background-color: rgb(var(--glass) / 0.7) !important;
+}
+
+.theme-cyberpunk.workspace-shell {
+  background:
+    radial-gradient(circle at 16% 12%, rgb(var(--moss) / 0.18), transparent 26%),
+    radial-gradient(circle at 86% 8%, rgb(var(--steel) / 0.18), transparent 28%),
+    radial-gradient(circle at 72% 84%, rgb(var(--coral) / 0.09), transparent 32%),
+    linear-gradient(135deg, rgb(5 8 18), rgb(8 13 30) 52%, rgb(4 9 20));
+}
+
+.theme-cyberpunk.workspace-shell::before {
+  opacity: 0.9;
+  background-image:
+    linear-gradient(rgb(var(--steel) / 0.11) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--steel) / 0.08) 1px, transparent 1px),
+    linear-gradient(120deg, transparent 0 48%, rgb(var(--moss) / 0.07) 49% 51%, transparent 52%);
+  background-size: 42px 42px, 42px 42px, 180px 180px;
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.78), transparent 82%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.78), transparent 82%);
+}
+
+.theme-cyberpunk.workspace-shell::after {
+  opacity: 0.28;
+  background-image:
+    linear-gradient(180deg, transparent 0 48%, rgb(var(--moss) / 0.2) 50%, transparent 52%),
+    radial-gradient(circle at 24% 22%, rgb(var(--steel) / 0.18) 0 1px, transparent 1px),
+    radial-gradient(circle at 76% 62%, rgb(var(--coral) / 0.14) 0 1px, transparent 1px);
+  background-size: 100% 9px, 18px 18px, 28px 28px;
+}
+
+.theme-cyberpunk .glass-sidebar,
+.theme-cyberpunk .glass-topbar,
+.theme-cyberpunk .glass-panel,
+.theme-cyberpunk .glass-control,
+.theme-cyberpunk .glass-subtle {
+  border-color: rgb(var(--steel) / 0.32);
+  box-shadow:
+    inset 0 1px 0 rgb(var(--glass-highlight) / 0.3),
+    inset 0 0 0 1px rgb(var(--moss) / 0.08),
+    0 18px 58px rgb(0 0 0 / 0.32),
+    0 0 28px rgb(var(--steel) / 0.05);
+}
+
+.theme-cyberpunk .glass-sidebar,
+.theme-cyberpunk .glass-topbar {
+  background:
+    linear-gradient(180deg, rgb(var(--glass) / 0.9), rgb(var(--glass) / 0.72)),
+    linear-gradient(90deg, rgb(var(--moss) / 0.06), transparent 38%, rgb(var(--steel) / 0.06));
+}
+
+.theme-cyberpunk .glass-panel {
+  background:
+    linear-gradient(135deg, rgb(var(--glass-highlight) / 0.08), transparent 34%),
+    rgb(var(--glass) / var(--glass-panel));
+}
+
+.theme-cyberpunk .glass-control,
+.theme-cyberpunk .glass-subtle,
+.theme-cyberpunk :where(input, select, textarea) {
+  background:
+    linear-gradient(135deg, rgb(var(--steel) / 0.08), transparent 54%),
+    rgb(var(--glass) / var(--glass-control));
+}
+
+.theme-cyberpunk .glass-selected {
+  background:
+    linear-gradient(135deg, rgb(var(--moss) / 0.95), rgb(var(--steel) / 0.78));
+  color: rgb(var(--selected-text));
+  box-shadow:
+    0 0 0 1px rgb(var(--moss) / 0.38),
+    0 14px 36px rgb(var(--moss) / 0.18),
+    0 0 42px rgb(var(--steel) / 0.12),
+    inset 0 1px 0 rgb(255 255 255 / 0.32);
+}
+
+.theme-cyberpunk .shadow-panel {
+  box-shadow:
+    0 1px 0 rgb(var(--glass-highlight) / 0.11),
+    0 20px 68px rgb(0 0 0 / 0.38),
+    0 0 32px rgb(var(--steel) / 0.06);
+}
+
+.theme-cyberpunk :where(a, button):not(:disabled):hover {
+  border-color: rgb(var(--moss) / 0.58);
+  box-shadow:
+    0 0 0 1px rgb(var(--moss) / 0.18),
+    0 12px 28px rgb(var(--steel) / 0.1);
+}
+
+.theme-cyberpunk :where(input, select, textarea):focus-visible {
+  border-color: rgb(var(--moss) / 0.72);
+  box-shadow:
+    0 0 0 3px rgb(var(--moss) / 0.13),
+    0 0 32px rgb(var(--steel) / 0.12);
+}
+
+.cyberpunk-theme-preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid rgb(var(--steel) / 0.42);
+  border-radius: 8px;
+  padding: 0 8px;
+  background:
+    linear-gradient(90deg, rgb(var(--moss) / 0.12), transparent 32%, rgb(var(--steel) / 0.14)),
+    linear-gradient(rgb(var(--steel) / 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--steel) / 0.16) 1px, transparent 1px),
+    rgb(var(--glass) / 0.74);
+  background-size: auto, 12px 12px, 12px 12px, auto;
+  box-shadow:
+    inset 0 1px 0 rgb(var(--glass-highlight) / 0.3),
+    0 0 18px rgb(var(--steel) / 0.08);
+}
+
+.cyberpunk-theme-preview::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(115deg, transparent 0 42%, rgb(var(--moss) / 0.24) 48%, transparent 54%);
+}
+
+.theme-cyberpunk .workspace-theme-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgb(var(--glass-highlight) / 0.07), transparent 36%),
+    linear-gradient(180deg, rgb(var(--glass) / 0.78), rgb(var(--glass) / 0.58));
+}
+
+.theme-cyberpunk .workspace-theme-card::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0;
+  background:
+    linear-gradient(90deg, rgb(var(--moss) / 0.24), transparent 34%, rgb(var(--steel) / 0.18)),
+    linear-gradient(180deg, transparent 0 46%, rgb(var(--steel) / 0.12) 50%, transparent 54%);
+  background-size: auto, 100% 8px;
+  transition: opacity 180ms ease;
+}
+
+.theme-cyberpunk .workspace-theme-card:hover::after,
+.theme-cyberpunk .workspace-theme-card[aria-current="true"]::after {
+  opacity: 1;
+}
+
+.theme-cyberpunk .workspace-theme-card[aria-current="true"] {
+  border-color: rgb(var(--moss) / 0.7);
+  background:
+    linear-gradient(135deg, rgb(var(--moss) / 0.13), transparent 40%),
+    linear-gradient(180deg, rgb(var(--glass) / 0.9), rgb(var(--glass) / 0.68));
+  box-shadow:
+    0 0 0 1px rgb(var(--moss) / 0.24),
+    0 0 30px rgb(var(--steel) / 0.12),
+    inset 0 1px 0 rgb(var(--glass-highlight) / 0.32);
+}
+
+.theme-cyberpunk .workspace-dashboard-hero,
+.theme-cyberpunk .workspace-health-card,
+.theme-cyberpunk .workspace-task-row,
+.theme-cyberpunk .workspace-metric-tile,
+.theme-cyberpunk .workspace-pipeline-chip {
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-cyberpunk .workspace-health-card,
+.theme-cyberpunk .workspace-task-row,
+.theme-cyberpunk .workspace-pipeline-chip {
+  border-color: rgb(var(--steel) / 0.3);
+  background:
+    linear-gradient(90deg, rgb(var(--moss) / 0.08), transparent 42%),
+    rgb(var(--glass) / 0.52);
+}
+
+.theme-cyberpunk .workspace-dashboard-hero::after,
+.theme-cyberpunk .workspace-task-row::after,
+.theme-cyberpunk .workspace-metric-tile::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(90deg, rgb(var(--moss) / 0.24), transparent 18%, transparent 82%, rgb(var(--steel) / 0.18)),
+    linear-gradient(180deg, transparent 0 48%, rgb(var(--steel) / 0.09) 50%, transparent 52%);
+  background-size: auto, 100% 10px;
+  opacity: 0.42;
+}
+
+.theme-cyberpunk .workspace-task-row::before,
+.theme-cyberpunk .workspace-metric-tile::before {
+  position: absolute;
+  inset: 12px auto 12px 0;
+  width: 2px;
+  content: "";
+  background: linear-gradient(180deg, rgb(var(--moss) / 0.9), rgb(var(--steel) / 0.25));
+  box-shadow: 0 0 18px rgb(var(--moss) / 0.28);
+}
+
+.theme-cyberpunk .workspace-health-card:hover,
+.theme-cyberpunk .workspace-task-row:hover,
+.theme-cyberpunk .workspace-pipeline-chip:hover {
+  border-color: rgb(var(--moss) / 0.58);
+  background:
+    linear-gradient(90deg, rgb(var(--moss) / 0.13), transparent 45%, rgb(var(--steel) / 0.09)),
+    rgb(var(--glass) / 0.6);
+}
+
+@media (min-width: 1280px) {
+  .theme-cyberpunk .pc-shell-grid {
+    grid-template-columns: 252px minmax(0, 1fr);
+  }
+}
+
+.theme-cyberpunk .pc-shell-content {
+  max-width: 1680px;
+  padding: 24px 28px 28px;
+}
+
+.theme-cyberpunk .pc-shell-sidebar {
+  border-color: rgb(var(--steel) / 0.28);
+  background:
+    linear-gradient(180deg, rgb(3 8 19 / 0.96), rgb(5 12 27 / 0.9)),
+    linear-gradient(90deg, rgb(var(--moss) / 0.08), transparent 38%);
+  box-shadow:
+    inset -1px 0 0 rgb(var(--steel) / 0.36),
+    18px 0 54px rgb(0 0 0 / 0.34);
+}
+
+.theme-cyberpunk .pc-shell-brand {
+  position: relative;
+  min-height: 84px;
+  border-color: rgb(var(--steel) / 0.28);
+  background:
+    linear-gradient(90deg, rgb(var(--moss) / 0.1), transparent 62%),
+    linear-gradient(180deg, rgb(var(--glass-highlight) / 0.06), transparent);
+}
+
+.theme-cyberpunk .pc-shell-brand::after {
+  position: absolute;
+  right: 14px;
+  bottom: -1px;
+  left: 14px;
+  height: 1px;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgb(var(--moss) / 0.8), rgb(var(--steel) / 0.7), transparent);
+  box-shadow: 0 0 16px rgb(var(--steel) / 0.32);
+}
+
+.theme-cyberpunk .pc-shell-brand img {
+  border: 1px solid rgb(var(--moss) / 0.58);
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 1px rgb(var(--steel) / 0.18),
+    0 0 26px rgb(var(--moss) / 0.24);
+}
+
+.theme-cyberpunk .pc-shell-brand .text-base {
+  color: rgb(var(--moss));
+  text-shadow: 0 0 18px rgb(var(--moss) / 0.34);
+}
+
+.theme-cyberpunk .pc-shell-status-card,
+.theme-cyberpunk .pc-shell-safety-card,
+.theme-cyberpunk .pc-shell-theme-card,
+.theme-cyberpunk .pc-shell-local-card {
+  position: relative;
+  overflow: hidden;
+  border-color: rgb(var(--steel) / 0.3);
+  background:
+    linear-gradient(135deg, rgb(var(--moss) / 0.1), transparent 44%),
+    linear-gradient(180deg, rgb(var(--glass) / 0.74), rgb(4 12 28 / 0.58));
+  box-shadow:
+    inset 0 1px 0 rgb(var(--glass-highlight) / 0.16),
+    inset 0 0 0 1px rgb(var(--moss) / 0.04),
+    0 0 28px rgb(var(--steel) / 0.06);
+  clip-path: polygon(0 10px, 10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+
+.theme-cyberpunk :is(.pc-shell-status-card, .pc-shell-safety-card, .pc-shell-theme-card, .pc-shell-local-card)::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(90deg, rgb(var(--moss) / 0.22), transparent 34%, rgb(var(--steel) / 0.16)),
+    linear-gradient(180deg, transparent 0 46%, rgb(var(--steel) / 0.1) 50%, transparent 54%);
+  background-size: auto, 100% 8px;
+  opacity: 0.34;
+}
+
+.theme-cyberpunk :is(.pc-shell-status-card, .pc-shell-safety-card, .pc-shell-theme-card, .pc-shell-local-card)::after {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 34px;
+  height: 8px;
+  pointer-events: none;
+  content: "";
+  border-top: 1px solid rgb(var(--moss) / 0.64);
+  border-right: 1px solid rgb(var(--steel) / 0.58);
+  opacity: 0.72;
+}
+
+.theme-cyberpunk :is(.pc-shell-status-card, .pc-shell-safety-card, .pc-shell-theme-card, .pc-shell-local-card) > * {
+  position: relative;
+  z-index: 1;
+}
+
+.theme-cyberpunk .pc-shell-nav-link {
+  position: relative;
+  min-height: 44px;
+  border: 1px solid transparent;
+  border-radius: 0;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%);
+}
+
+.theme-cyberpunk .pc-shell-nav-link[aria-current="page"] {
+  border-color: rgb(var(--moss) / 0.62);
+  background:
+    linear-gradient(90deg, rgb(var(--moss) / 0.22), rgb(var(--steel) / 0.08) 68%, transparent);
+  color: rgb(var(--moss));
+  box-shadow:
+    inset 3px 0 0 rgb(var(--moss)),
+    0 0 24px rgb(var(--moss) / 0.18);
+}
+
+.theme-cyberpunk .pc-shell-nav-link:not([aria-current="page"]):hover {
+  border-color: rgb(var(--steel) / 0.3);
+  background: rgb(var(--steel) / 0.07);
+}
+
+.theme-cyberpunk .pc-shell-topbar {
+  border-color: rgb(var(--steel) / 0.24);
+  background:
+    linear-gradient(90deg, rgb(var(--glass) / 0.96), rgb(4 9 20 / 0.84)),
+    linear-gradient(180deg, rgb(var(--glass-highlight) / 0.05), transparent);
+  box-shadow:
+    0 1px 0 rgb(var(--moss) / 0.2),
+    0 16px 54px rgb(0 0 0 / 0.28);
+}
+
+.theme-cyberpunk .pc-shell-tab-strip,
+.theme-cyberpunk .pc-shell-search-link,
+.theme-cyberpunk .pc-shell-action,
+.theme-cyberpunk .pc-shell-account,
+.theme-cyberpunk .pc-shell-primary-action {
+  clip-path: polygon(0 9px, 9px 0, calc(100% - 9px) 0, 100% 9px, 100% calc(100% - 9px), calc(100% - 9px) 100%, 9px 100%, 0 calc(100% - 9px));
+}
+
+.theme-cyberpunk .pc-shell-tab-link[aria-current="page"],
+.theme-cyberpunk .pc-shell-primary-action.glass-selected {
+  background:
+    linear-gradient(135deg, rgb(var(--moss) / 0.98), rgb(var(--steel) / 0.72));
+  color: rgb(2 8 15);
+  box-shadow:
+    0 0 0 1px rgb(var(--moss) / 0.48),
+    0 0 30px rgb(var(--moss) / 0.18);
+}
+
+.theme-cyberpunk .workspace-panel,
+.theme-cyberpunk .workspace-trend-console,
+.theme-cyberpunk .workspace-settings-overview,
+.theme-cyberpunk .workspace-subtle-card,
+.theme-cyberpunk .workspace-evidence-card,
+.theme-cyberpunk .glass-panel {
+  position: relative;
+  border-color: rgb(var(--steel) / 0.34);
+  border-radius: 0 !important;
+  clip-path: polygon(0 14px, 14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px));
+}
+
+.theme-cyberpunk .workspace-panel::before,
+.theme-cyberpunk .workspace-trend-console::before,
+.theme-cyberpunk .workspace-settings-overview::before,
+.theme-cyberpunk .glass-panel::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(90deg, rgb(var(--moss) / 0.52), transparent 18%, transparent 82%, rgb(var(--steel) / 0.42)),
+    linear-gradient(180deg, rgb(var(--steel) / 0.24), transparent 18%, transparent 82%, rgb(var(--moss) / 0.16));
+  opacity: 0.34;
+}
+
+.theme-cyberpunk .workspace-panel > *,
+.theme-cyberpunk .workspace-trend-console > *,
+.theme-cyberpunk .workspace-settings-overview > *,
+.theme-cyberpunk .glass-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.theme-cyberpunk .workspace-panel-header {
+  border-color: rgb(var(--steel) / 0.28);
+  background:
+    linear-gradient(90deg, rgb(var(--moss) / 0.08), transparent 60%),
+    linear-gradient(180deg, rgb(var(--glass-highlight) / 0.07), transparent);
+}
+
+.theme-cyberpunk .workspace-panel-header h2,
+.theme-cyberpunk .workspace-panel-header .text-sm.font-semibold {
+  color: rgb(238 252 255);
+  text-shadow: 0 0 18px rgb(var(--steel) / 0.22);
+}
+
+.theme-cyberpunk .workspace-subtle-card,
+.theme-cyberpunk .workspace-health-card,
+.theme-cyberpunk .workspace-task-row,
+.theme-cyberpunk .workspace-metric-tile,
+.theme-cyberpunk .workspace-pipeline-chip,
+.theme-cyberpunk .workspace-evidence-card {
+  border-color: rgb(var(--steel) / 0.28);
+  background:
+    linear-gradient(135deg, rgb(var(--glass-highlight) / 0.07), transparent 40%),
+    linear-gradient(180deg, rgb(var(--glass) / 0.72), rgb(var(--glass) / 0.48));
+  box-shadow:
+    inset 0 1px 0 rgb(var(--glass-highlight) / 0.18),
+    0 0 22px rgb(var(--steel) / 0.04);
+}
+
+.theme-cyberpunk .workspace-button,
+.theme-cyberpunk :where(a, button).bg-ink,
+.theme-cyberpunk :where(a, button).bg-moss {
+  border: 1px solid rgb(var(--moss) / 0.52);
+  border-radius: 0;
+  clip-path: polygon(0 10px, 10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+.theme-cyberpunk .workspace-button-primary,
+.theme-cyberpunk :where(a, button).bg-ink,
+.theme-cyberpunk :where(a, button).bg-moss {
+  background:
+    linear-gradient(135deg, rgb(var(--moss) / 0.94), rgb(var(--steel) / 0.68)) !important;
+  color: rgb(2 8 15) !important;
+  box-shadow:
+    0 0 0 1px rgb(var(--moss) / 0.22),
+    0 0 30px rgb(var(--moss) / 0.18),
+    inset 0 1px 0 rgb(255 255 255 / 0.24);
+}
+
+.theme-cyberpunk .workspace-button-secondary {
+  border-color: rgb(var(--steel) / 0.38);
+  background:
+    linear-gradient(135deg, rgb(var(--steel) / 0.12), transparent 58%),
+    rgb(var(--glass) / 0.62);
+}
+
+.theme-cyberpunk .workspace-pill {
+  border-radius: 0;
+  clip-path: polygon(0 7px, 7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%);
+  text-transform: none;
+}
+
+.theme-cyberpunk .workspace-icon-box {
+  border: 1px solid currentColor;
+  border-radius: 0;
+  background: rgb(var(--glass) / 0.58);
+  box-shadow: 0 0 18px currentColor;
+  clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+}
+
+.theme-cyberpunk :where(input, select, textarea),
+.theme-cyberpunk .workspace-form-control {
+  border-color: rgb(var(--steel) / 0.36);
+  border-radius: 0;
+  background:
+    linear-gradient(90deg, rgb(var(--steel) / 0.08), transparent 58%),
+    rgb(5 13 27 / 0.86) !important;
+  box-shadow: inset 0 0 0 1px rgb(var(--moss) / 0.04);
+}
+
+.theme-cyberpunk table {
+  background: rgb(3 10 21 / 0.66);
+}
+
+.theme-cyberpunk thead {
+  background:
+    linear-gradient(90deg, rgb(var(--moss) / 0.08), rgb(var(--steel) / 0.06));
+}
+
+.theme-cyberpunk tbody tr {
+  background: rgb(var(--glass) / 0.26);
+}
+
+.theme-cyberpunk tbody tr:hover {
+  background:
+    linear-gradient(90deg, rgb(var(--moss) / 0.1), rgb(var(--steel) / 0.04));
+}
+
+.theme-cyberpunk :where(th, td) {
+  border-color: rgb(var(--steel) / 0.18);
+}
+
+.theme-cyberpunk .workspace-evidence-switcher,
+.theme-cyberpunk .workspace-evidence-toggle {
+  border-color: rgb(var(--steel) / 0.26);
+  background: rgb(var(--glass) / 0.46);
+}
+
+.theme-cyberpunk .workspace-evidence-toggle[aria-expanded="true"] {
+  border: 1px solid rgb(var(--moss) / 0.5);
+  background:
+    linear-gradient(90deg, rgb(var(--moss) / 0.16), rgb(var(--steel) / 0.08));
+  color: rgb(var(--ink));
+}
+
+.theme-cyberpunk .workspace-evidence-result-card {
+  border-color: rgb(var(--steel) / 0.28);
+  background:
+    linear-gradient(135deg, rgb(var(--glass-highlight) / 0.08), transparent 42%),
+    rgb(5 13 27 / 0.72);
+  box-shadow:
+    inset 0 1px 0 rgb(var(--glass-highlight) / 0.14),
+    0 12px 30px rgb(0 0 0 / 0.18);
+}
+
+.theme-cyberpunk a.workspace-evidence-result-card:hover,
+.theme-cyberpunk a.workspace-evidence-result-card:focus-visible {
+  border-color: rgb(var(--moss) / 0.5);
+  outline: 2px solid rgb(var(--moss) / 0.34);
+  outline-offset: 2px;
+  box-shadow:
+    inset 0 1px 0 rgb(var(--glass-highlight) / 0.18),
+    0 0 0 1px rgb(var(--moss) / 0.18),
+    0 18px 42px rgb(var(--moss) / 0.14);
+}
+
+.theme-cyberpunk .border-coral\/30,
+.theme-cyberpunk .border-coral\/40,
+.theme-cyberpunk .border-coral\/45 {
+  border-color: rgb(var(--coral) / 0.62) !important;
+}
+
+.theme-cyberpunk .bg-coral\/10 {
+  background:
+    linear-gradient(90deg, rgb(var(--coral) / 0.18), rgb(var(--coral) / 0.06)) !important;
+  box-shadow: inset 3px 0 0 rgb(var(--coral) / 0.75);
+}
+
+.theme-cyberpunk .workspace-creation-gateway .glass-panel,
+.theme-cyberpunk .workspace-content-status,
+.theme-cyberpunk .workspace-preview-modal-card,
+.theme-cyberpunk .workspace-cover-layout .workspace-panel,
+.theme-cyberpunk .workspace-delivery-layout .workspace-panel,
+.theme-cyberpunk .workspace-settings-layout .workspace-panel {
+  box-shadow:
+    inset 0 1px 0 rgb(var(--glass-highlight) / 0.2),
+    0 20px 70px rgb(0 0 0 / 0.34),
+    0 0 36px rgb(var(--steel) / 0.06);
+}
+
+.theme-cyberpunk .workspace-preview-modal-card {
+  border-color: rgb(var(--steel) / 0.34);
+  border-radius: 0 !important;
+  background:
+    linear-gradient(135deg, rgb(var(--moss) / 0.08), transparent 34%),
+    linear-gradient(180deg, rgb(var(--paper) / 0.98), rgb(4 12 28 / 0.94));
+  clip-path: polygon(0 18px, 18px 0, calc(100% - 18px) 0, 100% 18px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 18px 100%, 0 calc(100% - 18px));
+}
+
+.theme-cyberpunk .workspace-preview-close-button {
+  border: 1px solid rgb(var(--steel) / 0.48);
+  border-radius: 0 !important;
+  background:
+    linear-gradient(135deg, rgb(var(--moss) / 0.16), transparent 56%),
+    rgb(4 12 28 / 0.84) !important;
+  color: rgb(var(--ink));
+  clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+  box-shadow:
+    0 0 0 1px rgb(var(--moss) / 0.16),
+    0 0 22px rgb(var(--steel) / 0.12);
+}
+
+.theme-cyberpunk .workspace-preview-copy-button {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(var(--moss) / 0.58);
+  border-radius: 0 !important;
+  background:
+    linear-gradient(135deg, rgb(var(--moss) / 0.82), rgb(var(--steel) / 0.56)),
+    rgb(var(--ink)) !important;
+  color: rgb(var(--paper)) !important;
+  clip-path: polygon(0 10px, 10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+  box-shadow:
+    inset 0 1px 0 rgb(var(--glass-highlight) / 0.28),
+    0 0 28px rgb(var(--moss) / 0.18),
+    0 0 44px rgb(var(--steel) / 0.16);
+}
+
+.theme-cyberpunk .workspace-preview-copy-button::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgb(var(--glass-highlight) / 0.24), transparent);
+  opacity: 0;
+  transform: translateX(-55%);
+  transition:
+    opacity 180ms ease,
+    transform 220ms ease;
+}
+
+.theme-cyberpunk .workspace-preview-copy-button:not(:disabled):hover::after,
+.theme-cyberpunk .workspace-preview-copy-button:focus-visible::after {
+  opacity: 1;
+  transform: translateX(55%);
+}
+
+.theme-cyberpunk .workspace-preview-copy-button:focus-visible {
+  outline: 2px solid rgb(var(--moss) / 0.84);
+  outline-offset: 2px;
+}
+
+.theme-cyberpunk .workspace-trend-results,
+.theme-cyberpunk .workspace-knowledge-layout,
+.theme-cyberpunk .workspace-content-grid,
+.theme-cyberpunk .workspace-delivery-grid {
+  position: relative;
+}
+
+.theme-brutalist .glass-panel,
+.theme-brutalist .glass-control,
+.theme-brutalist .glass-subtle {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
