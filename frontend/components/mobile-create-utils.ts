@@ -63,19 +63,22 @@ export function buildMobileCoverStyleNotes(platform: MobilePlatform, topic: stri
 export function buildMobileCoverImageRequestPayload(
   platform: MobilePlatform,
   contentId: number,
-  styleNotes: string
+  styleNotes: string,
+  profileStyle?: Record<string, string> | null
 ): {
   aspect_ratio: string;
   content_id: number;
   style_notes: string;
   template: string;
+  profile_style?: Record<string, string>;
 } {
   const isDouyinPost = platform === "douyin";
   return {
     aspect_ratio: isDouyinPost ? "9:16" : "3:4",
     content_id: contentId,
     style_notes: styleNotes,
-    template: isDouyinPost ? "douyin-cover" : "xiaohongshu-cover"
+    template: isDouyinPost ? "douyin-cover" : "xiaohongshu-cover",
+    ...(profileStyle ? { profile_style: profileStyle } : {})
   };
 }
 

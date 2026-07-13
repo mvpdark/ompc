@@ -64,6 +64,7 @@ interface UseGenerationApiParams {
   generationKnowledgeQuery: string;
   apiBase: string;
   profileId: string | null;
+  profileStyle: Record<string, string> | null;
   credentials: CredentialSettings;
   sourceEvidenceBlocked: boolean;
   draftPreview: DraftPreviewState;
@@ -91,6 +92,7 @@ export function useGenerationApi(params: UseGenerationApiParams) {
     generationKnowledgeQuery,
     apiBase,
     profileId,
+    profileStyle,
     credentials,
     sourceEvidenceBlocked,
     draftPreview,
@@ -118,9 +120,10 @@ export function useGenerationApi(params: UseGenerationApiParams) {
       target_audience: useProfile ? undefined : (targetAudience.trim() || undefined),
       knowledge_limit: MOBILE_GENERATE_KNOWLEDGE_LIMIT,
       tags: useProfile ? [] : parseTagText(tagsText),
-      ...(profileId ? { profile_id: profileId } : {})
+      ...(profileId ? { profile_id: profileId } : {}),
+      ...(profileStyle ? { profile_style: profileStyle } : {})
     };
-  }, [platform, topic, generationKnowledgeQuery, contentMode, targetAudience, tagsText, profileId]);
+  }, [platform, topic, generationKnowledgeQuery, contentMode, targetAudience, tagsText, profileId, profileStyle]);
 
   const previewAbortRef = useRef<AbortController | null>(null);
   const activeRef = useRef(true);
@@ -247,7 +250,7 @@ export function useGenerationApi(params: UseGenerationApiParams) {
         method: "POST",
         headers: authHeaders(credentials),
         body: JSON.stringify(
-          buildMobileCoverImageRequestPayload(platform, data.id, coverStyleNotes)
+          buildMobileCoverImageRequestPayload(platform, data.id, coverStyleNotes, profileStyle)
         ),
         signal: genController.signal
       });
@@ -291,6 +294,7 @@ export function useGenerationApi(params: UseGenerationApiParams) {
     credentials,
     platform,
     profileId,
+    profileStyle,
     syncDraftIntoHistory,
     onAction,
     buildMobileGenerationRequestPayload,

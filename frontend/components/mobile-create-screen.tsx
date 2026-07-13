@@ -97,15 +97,29 @@ export const CreateScreen = memo(function CreateScreen({
   const activeRef = useRef(true);
 
   // ZSCJ 风格与写手选择
-  const [roleTypes, setRoleTypes] = useState<{ id: string; label: string; description: string }[]>([]);
+  const [roleTypes, setRoleTypes] = useState<{ id: string; label: string; description: string; accounts: { id: string; name: string; description: string; post_count: number; avg_likes: number; style_dna?: Record<string, unknown> }[] }[]>([]);
   const [selectedRoleTypeId, setSelectedRoleTypeId] = useState<string | null>(null);
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
 
   const accounts = useMemo(() => {
     if (!selectedRoleTypeId) return [];
     const rt = roleTypes.find((r) => r.id === selectedRoleTypeId);
-    return (rt as { accounts?: { id: string; name: string; description: string; post_count: number; avg_likes: number }[] } | undefined)?.accounts ?? [];
+    return (rt as { accounts?: { id: string; name: string; description: string; post_count: number; avg_likes: number; style_dna?: Record<string, unknown> }[] } | undefined)?.accounts ?? [];
   }, [roleTypes, selectedRoleTypeId]);
+
+  const selectedProfileStyle = useMemo(() => {
+    if (!selectedProfileId || !selectedRoleTypeId) return null;
+    const rt = roleTypes.find((r) => r.id === selectedRoleTypeId);
+    if (!rt) return null;
+    const acct = (rt as { accounts?: { id: string; name: string; description: string; style_dna?: Record<string, unknown> }[] }).accounts?.find((a) => a.id === selectedProfileId);
+    if (!acct) return null;
+    return {
+      profile_name: acct.name,
+      role_type: rt.label,
+      style_dna: JSON.stringify(acct.style_dna ?? {}),
+      description: acct.description,
+    };
+  }, [selectedProfileId, selectedRoleTypeId, roleTypes]);
 
   useEffect(() => {
     let cancelled = false;
@@ -118,7 +132,7 @@ export const CreateScreen = memo(function CreateScreen({
           id: String(item.id ?? ""),
           label: String(item.label ?? item.name ?? ""),
           description: String(item.description ?? ""),
-          accounts: (item.accounts as { id: string; name: string; description: string; post_count: number; avg_likes: number }[]) ?? [],
+          accounts: (item.accounts as { id: string; name: string; description: string; post_count: number; avg_likes: number; style_dna?: Record<string, unknown> }[]) ?? [],
         }));
         if (!cancelled) setRoleTypes(mapped);
       })
@@ -257,6 +271,7 @@ export const CreateScreen = memo(function CreateScreen({
     generationKnowledgeQuery,
     apiBase,
     profileId: selectedProfileId,
+    profileStyle: selectedProfileStyle,
     credentials,
     sourceEvidenceBlocked,
     draftPreview,
@@ -435,7 +450,7 @@ const clearMobileSourceEvidence = useCallback(() => {
         method: "POST",
         headers: authHeaders(credentials),
         body: JSON.stringify(
-          buildMobileCoverImageRequestPayload(platform, contentId, coverStyleNotes)
+          buildMobileCoverImageRequestPayload(platform, contentId, coverStyleNotes, selectedProfileStyle)
         ),
         signal: controller.signal
       });
@@ -463,7 +478,7 @@ const clearMobileSourceEvidence = useCallback(() => {
         setRegeneratingImage(false);
       }
     }
-  }, [generatedContent, regeneratingImage, platform, topic, apiBase, credentials, onAction, draftHistory.syncDraftIntoHistory]);
+  }, [generatedContent, regeneratingImage, platform, topic, apiBase, credentials, onAction, draftHistory.syncDraftIntoHistory, selectedProfileStyle]);
 
   const refreshPresetsRef = useRef(refreshMobileTopicPresets);
   refreshPresetsRef.current = refreshMobileTopicPresets;
