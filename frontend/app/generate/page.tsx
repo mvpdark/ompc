@@ -116,14 +116,19 @@ function formatLikes(count: number): string {
 function normalizeProfiles(data: unknown): RoleType[] {
   if (!Array.isArray(data)) return [];
 
-  // 已是 RoleType[] 格式
+  // 已是 RoleType[] 格式（API 返回的分组格式，字段名为 name 而非 label）
   if (
     data.length > 0 &&
     typeof data[0] === "object" &&
     data[0] !== null &&
     "accounts" in data[0]
   ) {
-    return data as RoleType[];
+    return (data as Record<string, unknown>[]).map((item) => ({
+      id: String(item.id ?? ""),
+      label: String(item.label ?? item.name ?? ""),
+      description: String(item.description ?? ""),
+      accounts: (item.accounts as StyleProfile[]) ?? [],
+    }));
   }
 
   // 扁平 StyleProfile[] 列表，按 role_type_id 分组
