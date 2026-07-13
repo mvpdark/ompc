@@ -109,14 +109,15 @@ export function useGenerationApi(params: UseGenerationApiParams) {
   } = params;
 
   const buildMobileGenerationRequestPayload = useCallback(() => {
+    const useProfile = !!profileId;
     return {
       platform,
       topic: topic.trim(),
       knowledge_query: generationKnowledgeQuery.trim() || undefined,
       tone: contentMode === "xiaohongshu" ? xhsMobileDraftTone : shortPostDraftTone,
-      target_audience: targetAudience.trim() || undefined,
+      target_audience: useProfile ? undefined : (targetAudience.trim() || undefined),
       knowledge_limit: MOBILE_GENERATE_KNOWLEDGE_LIMIT,
-      tags: parseTagText(tagsText),
+      tags: useProfile ? [] : parseTagText(tagsText),
       ...(profileId ? { profile_id: profileId } : {})
     };
   }, [platform, topic, generationKnowledgeQuery, contentMode, targetAudience, tagsText, profileId]);

@@ -153,15 +153,22 @@ export const FormPanel = memo(function FormPanel(props: FormPanelProps) {
         previewBusy={sourcePreviewBusy}
         sourceContext={visibleMobileSourceContext}
       />
-      <label className="mt-3 block">
-        <span className="text-xs font-medium text-muted">目标人群</span>
-        <input
-          className="mt-2 h-12 w-full rounded-full border border-white/[0.84] bg-[rgba(255,253,247,0.88)] px-4 text-sm font-medium text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.86)] outline-none focus:border-moss focus:ring-2 focus:ring-moss/[0.15]"
-          data-testid="mobile-audience"
-          onChange={handleTargetAudienceChange}
-          value={targetAudience}
-        />
-      </label>
+      {selectedProfileId ? (
+        <div className="mt-3 rounded-[16px] border border-moss/30 bg-sage/60 px-4 py-3">
+          <span className="text-xs font-medium text-moss">目标人群 · AI自动生成</span>
+          <p className="mt-1 text-[11px] text-muted">已选择写手风格，目标人群由AI根据风格自动判断</p>
+        </div>
+      ) : (
+        <label className="mt-3 block">
+          <span className="text-xs font-medium text-muted">目标人群</span>
+          <input
+            className="mt-2 h-12 w-full rounded-full border border-white/[0.84] bg-[rgba(255,253,247,0.88)] px-4 text-sm font-medium text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.86)] outline-none focus:border-moss focus:ring-2 focus:ring-moss/[0.15]"
+            data-testid="mobile-audience"
+            onChange={handleTargetAudienceChange}
+            value={targetAudience}
+          />
+        </label>
+      )}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <ModeChip
           active={platform === "xiaohongshu"}
@@ -202,15 +209,22 @@ export const FormPanel = memo(function FormPanel(props: FormPanelProps) {
           testId="mode-short"
         />
       </div>
-      <label className="mt-3 block">
-        <span className="text-xs font-medium text-muted">标签</span>
-        <input
-          className="mt-2 h-11 w-full rounded-full border border-white/[0.84] bg-[rgba(255,253,247,0.88)] px-4 text-sm font-medium text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.86)] outline-none focus:border-moss focus:ring-2 focus:ring-moss/[0.15]"
-          data-testid="mobile-tags"
-          onChange={handleTagsChange}
-          value={tagsText}
-        />
-      </label>
+      {selectedProfileId ? (
+        <div className="mt-3 rounded-[16px] border border-moss/30 bg-sage/60 px-4 py-3">
+          <span className="text-xs font-medium text-moss">标签 · AI自动生成</span>
+          <p className="mt-1 text-[11px] text-muted">已选择写手风格，标签由AI根据风格和主题自动生成</p>
+        </div>
+      ) : (
+        <label className="mt-3 block">
+          <span className="text-xs font-medium text-muted">标签</span>
+          <input
+            className="mt-2 h-11 w-full rounded-full border border-white/[0.84] bg-[rgba(255,253,247,0.88)] px-4 text-sm font-medium text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.86)] outline-none focus:border-moss focus:ring-2 focus:ring-moss/[0.15]"
+            data-testid="mobile-tags"
+            onChange={handleTagsChange}
+            value={tagsText}
+          />
+        </label>
+      )}
 
       {/* 风格选择 */}
       {roleTypes.length > 0 && (
