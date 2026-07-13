@@ -15,7 +15,7 @@ import {
   listTrends,
   reviewVideo,
   type TrendRead,
-} from "@/lib/api";
+} from "@/lib/zscj/api";
 import {
   Button,
   Card,
@@ -25,8 +25,8 @@ import {
   Select,
   StatusBadgeForValue,
   Textarea,
-} from "@/components/ui";
-import { formatDateTime, truncate } from "@/lib/utils";
+} from "@/components/zscj/ui";
+import { formatDateTime, truncate } from "@/lib/zscj/utils";
 
 const PLATFORM_OPTIONS = [
   { value: "", label: "全部平台" },

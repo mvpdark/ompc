@@ -6,7 +6,7 @@ import {
   listCollectionJobs,
   startCollectionJob,
   type TrendCollectionJobRead,
-} from "@/lib/api";
+} from "@/lib/zscj/api";
 import {
   Button,
   Card,
@@ -15,8 +15,8 @@ import {
   ErrorBanner,
   LoadingSpinner,
   StatusBadgeForValue,
-} from "@/components/ui";
-import { formatDateTime } from "@/lib/utils";
+} from "@/components/zscj/ui";
+import { formatDateTime } from "@/lib/zscj/utils";
 
 const PLATFORM_LABELS: Record<string, string> = {
   xiaohongshu: "小红书",

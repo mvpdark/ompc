@@ -6,7 +6,7 @@ import {
   listKnowledge,
   searchKnowledge,
   type KnowledgeSearchResult,
-} from "@/lib/api";
+} from "@/lib/zscj/api";
 import {
   Button,
   Card,
@@ -15,8 +15,8 @@ import {
   Input,
   LoadingSpinner,
   Select,
-} from "@/components/ui";
-import { truncate } from "@/lib/utils";
+} from "@/components/zscj/ui";
+import { truncate } from "@/lib/zscj/utils";
 
 const PAGE_SIZE = 10;
 

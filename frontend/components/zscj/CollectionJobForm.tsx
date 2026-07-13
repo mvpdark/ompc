@@ -6,13 +6,13 @@ import {
   createCollectionJob,
   type CollectionJobPayload,
   type TrendCollectionJobRead,
-} from "@/lib/api";
+} from "@/lib/zscj/api";
 import {
   Button,
   ErrorBanner,
   Input,
   Select,
-} from "@/components/ui";
+} from "@/components/zscj/ui";
 
 const PLATFORM_OPTIONS = [
   { value: "xiaohongshu", label: "小红书" },

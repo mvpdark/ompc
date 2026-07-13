@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BookOpen, LayoutDashboard, LogOut, PenTool, TrendingUp } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { clearStoredUser, clearToken, getStoredUser, type UserRead } from "@/lib/api";
+import { cn } from "@/lib/zscj/utils";
+import { clearStoredUser, clearToken, getStoredUser, type UserRead } from "@/lib/zscj/api";
 
 const NAV_LINKS = [
   { href: "/", label: "首页", icon: LayoutDashboard },

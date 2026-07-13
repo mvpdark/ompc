@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { CheckCircle2, Upload } from "lucide-react";
-import { uploadKnowledge, type KnowledgeSearchResult } from "@/lib/api";
+import { uploadKnowledge, type KnowledgeSearchResult } from "@/lib/zscj/api";
 import {
   Button,
   ErrorBanner,
   Input,
   Select,
   Textarea,
-} from "@/components/ui";
+} from "@/components/zscj/ui";
 
 const CATEGORY_OPTIONS = [
   { value: "", label: "不指定分类" },
