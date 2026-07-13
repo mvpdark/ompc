@@ -63,6 +63,7 @@ interface UseGenerationApiParams {
   tagsText: string;
   generationKnowledgeQuery: string;
   apiBase: string;
+  profileId: string | null;
   credentials: CredentialSettings;
   sourceEvidenceBlocked: boolean;
   draftPreview: DraftPreviewState;
@@ -89,6 +90,7 @@ export function useGenerationApi(params: UseGenerationApiParams) {
     tagsText,
     generationKnowledgeQuery,
     apiBase,
+    profileId,
     credentials,
     sourceEvidenceBlocked,
     draftPreview,
@@ -114,9 +116,10 @@ export function useGenerationApi(params: UseGenerationApiParams) {
       tone: contentMode === "xiaohongshu" ? xhsMobileDraftTone : shortPostDraftTone,
       target_audience: targetAudience.trim() || undefined,
       knowledge_limit: MOBILE_GENERATE_KNOWLEDGE_LIMIT,
-      tags: parseTagText(tagsText)
+      tags: parseTagText(tagsText),
+      ...(profileId ? { profile_id: profileId } : {})
     };
-  }, [platform, topic, generationKnowledgeQuery, contentMode, targetAudience, tagsText]);
+  }, [platform, topic, generationKnowledgeQuery, contentMode, targetAudience, tagsText, profileId]);
 
   const previewAbortRef = useRef<AbortController | null>(null);
   const activeRef = useRef(true);
@@ -286,6 +289,7 @@ export function useGenerationApi(params: UseGenerationApiParams) {
     apiBase,
     credentials,
     platform,
+    profileId,
     syncDraftIntoHistory,
     onAction,
     buildMobileGenerationRequestPayload,

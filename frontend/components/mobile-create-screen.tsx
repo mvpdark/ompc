@@ -62,6 +62,7 @@ import { useGenerationApi } from "./mobile-create/use-generation-api";
 import { HeroSection } from "./mobile-create/hero-section";
 import { FormPanel } from "./mobile-create/form-panel";
 import { DraftHistorySection } from "./mobile-create/draft-history-section";
+import { getZscjApiBase } from "@/lib/api-base";
 
 export const CreateScreen = memo(function CreateScreen({
   active = true,
@@ -94,6 +95,36 @@ export const CreateScreen = memo(function CreateScreen({
   const [previewOpen, setPreviewOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const activeRef = useRef(true);
+
+  // ZSCJ 风格与写手选择
+  const [roleTypes, setRoleTypes] = useState<{ id: string; label: string; description: string }[]>([]);
+  const [selectedRoleTypeId, setSelectedRoleTypeId] = useState<string | null>(null);
+  const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
+
+  const accounts = useMemo(() => {
+    if (!selectedRoleTypeId) return [];
+    const rt = roleTypes.find((r) => r.id === selectedRoleTypeId);
+    return (rt as { accounts?: { id: string; name: string; description: string; post_count: number; avg_likes: number }[] } | undefined)?.accounts ?? [];
+  }, [roleTypes, selectedRoleTypeId]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const zscjBase = getZscjApiBase();
+    fetch(`${zscjBase}/generate/profiles`)
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data: unknown) => {
+        if (cancelled || !Array.isArray(data)) return;
+        const mapped = (data as Record<string, unknown>[]).map((item) => ({
+          id: String(item.id ?? ""),
+          label: String(item.label ?? item.name ?? ""),
+          description: String(item.description ?? ""),
+          accounts: (item.accounts as { id: string; name: string; description: string; post_count: number; avg_likes: number }[]) ?? [],
+        }));
+        if (!cancelled) setRoleTypes(mapped);
+      })
+      .catch(() => undefined);
+    return () => { cancelled = true; };
+  }, []);
 
   const draftHistory = useDraftHistory({
     apiBase,
@@ -225,6 +256,7 @@ export const CreateScreen = memo(function CreateScreen({
     tagsText,
     generationKnowledgeQuery,
     apiBase,
+    profileId: selectedProfileId,
     credentials,
     sourceEvidenceBlocked,
     draftPreview,
@@ -541,6 +573,15 @@ const clearMobileSourceEvidence = useCallback(() => {
         mobileGenerateDraftDisabled={mobileGenerateDraftDisabled}
         onGenerate={generationApi.generateDraftAndCover}
         staleMobileDraftMessage={staleMobileDraftMessage}
+        roleTypes={roleTypes}
+        selectedRoleTypeId={selectedRoleTypeId}
+        onRoleTypeChange={(id) => {
+          setSelectedRoleTypeId(id);
+          setSelectedProfileId(null);
+        }}
+        accounts={accounts}
+        selectedProfileId={selectedProfileId}
+        onProfileChange={setSelectedProfileId}
       />
       <DraftHistorySection
         activeContentId={generatedContentMatchesCurrentInputs ? generatedContent?.id ?? null : null}

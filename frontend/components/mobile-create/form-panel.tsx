@@ -38,6 +38,12 @@ interface FormPanelProps {
   mobileGenerateDraftDisabled: boolean;
   onGenerate: () => Promise<void>;
   staleMobileDraftMessage: string | null;
+  roleTypes: { id: string; label: string; description: string }[];
+  selectedRoleTypeId: string | null;
+  onRoleTypeChange: (id: string | null) => void;
+  accounts: { id: string; name: string; description: string; post_count: number; avg_likes: number }[];
+  selectedProfileId: string | null;
+  onProfileChange: (id: string | null) => void;
 }
 
 export const FormPanel = memo(function FormPanel(props: FormPanelProps) {
@@ -67,7 +73,13 @@ export const FormPanel = memo(function FormPanel(props: FormPanelProps) {
     generatedContentMatchesCurrentInputs,
     mobileGenerateDraftDisabled,
     onGenerate,
-    staleMobileDraftMessage
+    staleMobileDraftMessage,
+    roleTypes,
+    selectedRoleTypeId,
+    onRoleTypeChange,
+    accounts,
+    selectedProfileId,
+    onProfileChange
   } = props;
 
   const handleTopicChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -199,6 +211,80 @@ export const FormPanel = memo(function FormPanel(props: FormPanelProps) {
           value={tagsText}
         />
       </label>
+
+      {/* 风格选择 */}
+      {roleTypes.length > 0 && (
+        <div className="mt-3">
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-xs font-medium text-muted">风格</span>
+            {selectedRoleTypeId && (
+              <button
+                className="text-[11px] font-medium text-muted underline"
+                onClick={() => { onRoleTypeChange(null); onProfileChange(null); }}
+                type="button"
+              >
+                清除
+              </button>
+            )}
+          </div>
+          <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+            {roleTypes.map((rt) => (
+              <button
+                className={[
+                  "min-w-[100px] rounded-[16px] border px-3 py-2 text-left active:scale-[0.99]",
+                  selectedRoleTypeId === rt.id
+                    ? "border-moss bg-sage text-moss"
+                    : "border-white/[0.88] bg-[rgba(255,253,247,0.86)] text-ink"
+                ].join(" ")}
+                key={rt.id}
+                onClick={() => onRoleTypeChange(rt.id === selectedRoleTypeId ? null : rt.id)}
+                type="button"
+              >
+                <span className="block text-[11px] font-black">{rt.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 写手选择 */}
+      {selectedRoleTypeId && accounts.length > 0 && (
+        <div className="mt-3">
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-xs font-medium text-muted">写手</span>
+            {selectedProfileId && (
+              <button
+                className="text-[11px] font-medium text-muted underline"
+                onClick={() => onProfileChange(null)}
+                type="button"
+              >
+                清除
+              </button>
+            )}
+          </div>
+          <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+            {accounts.map((acct) => (
+              <button
+                className={[
+                  "min-w-[120px] rounded-[16px] border px-3 py-2 text-left active:scale-[0.99]",
+                  selectedProfileId === acct.id
+                    ? "border-moss bg-sage text-moss"
+                    : "border-white/[0.88] bg-[rgba(255,253,247,0.86)] text-ink"
+                ].join(" ")}
+                key={acct.id}
+                onClick={() => onProfileChange(acct.id === selectedProfileId ? null : acct.id)}
+                type="button"
+              >
+                <span className="block text-[11px] font-black">{acct.name}</span>
+                <span className="mt-0.5 block text-[10px] font-medium text-muted">
+                  {acct.post_count}篇 · 均{(acct.avg_likes / 1000).toFixed(1)}k
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <button
         aria-label="一键完成撰稿和封面图"
         className="mt-4 flex h-[54px] w-full touch-manipulation items-center justify-center gap-2 rounded-full bg-coral text-sm font-black text-white shadow-[0_16px_34px_rgba(255,36,66,0.22)] active:scale-[0.99] disabled:opacity-60"
