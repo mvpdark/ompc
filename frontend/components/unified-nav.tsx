@@ -122,8 +122,8 @@ export default function UnifiedNav() {
         </nav>
       </header>
 
-      {/* 移动端：底部水平导航条（首页有自带 BottomNav，跳过避免重复） */}
-      {pathname !== "/" && (
+      {/* 移动端：底部水平导航条（首页和Android端有自带 BottomNav，跳过避免重复） */}
+      {pathname !== "/" && pathname !== "/android" && (
       <nav
         className={cn(
           "fixed inset-x-0 bottom-0 z-50 flex md:hidden",
