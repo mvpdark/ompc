@@ -111,13 +111,15 @@ export const CreateScreen = memo(function CreateScreen({
     if (!selectedProfileId || !selectedRoleTypeId) return null;
     const rt = roleTypes.find((r) => r.id === selectedRoleTypeId);
     if (!rt) return null;
-    const acct = (rt as { accounts?: { id: string; name: string; description: string; style_dna?: Record<string, unknown> }[] }).accounts?.find((a) => a.id === selectedProfileId);
+    const acct = (rt as { accounts?: { id: string; name: string; description: string; style_dna?: Record<string, unknown>; system_prompt?: string; cover_style?: string }[] }).accounts?.find((a) => a.id === selectedProfileId);
     if (!acct) return null;
     return {
       profile_name: acct.name,
       role_type: rt.label,
       style_dna: JSON.stringify(acct.style_dna ?? {}),
       description: acct.description,
+      system_prompt: acct.system_prompt ?? "",
+      cover_style: acct.cover_style ?? "",
     };
   }, [selectedProfileId, selectedRoleTypeId, roleTypes]);
 
