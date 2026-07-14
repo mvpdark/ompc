@@ -97,7 +97,7 @@ export const CreateScreen = memo(function CreateScreen({
   const activeRef = useRef(true);
 
   // ZSCJ 风格与写手选择
-  const [roleTypes, setRoleTypes] = useState<{ id: string; label: string; description: string; accounts: { id: string; name: string; description: string; post_count: number; avg_likes: number; style_dna?: Record<string, unknown> }[] }[]>([]);
+  const [roleTypes, setRoleTypes] = useState<{ id: string; label: string; description: string; accounts: { id: string; name: string; description: string; post_count: number; avg_likes: number; style_dna?: Record<string, unknown>; system_prompt?: string; cover_style?: string }[] }[]>([]);
   const [selectedRoleTypeId, setSelectedRoleTypeId] = useState<string | null>(null);
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
 
@@ -134,7 +134,7 @@ export const CreateScreen = memo(function CreateScreen({
           id: String(item.id ?? ""),
           label: String(item.label ?? item.name ?? ""),
           description: String(item.description ?? ""),
-          accounts: (item.accounts as { id: string; name: string; description: string; post_count: number; avg_likes: number; style_dna?: Record<string, unknown> }[]) ?? [],
+          accounts: (item.accounts as { id: string; name: string; description: string; post_count: number; avg_likes: number; style_dna?: Record<string, unknown>; system_prompt?: string; cover_style?: string }[]) ?? [],
         }));
         if (!cancelled) setRoleTypes(mapped);
       })
